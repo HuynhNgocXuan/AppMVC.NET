@@ -2,10 +2,19 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc.Razor;
 using webMVC.Services;
 using webMVC.ExtendMethods;
+using webMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<AppDbContext>(options => {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AppMvcConnectionString"));
+});
+
+// builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+//     .AddEntityFrameworkStores<AppDbContext>()
+//     .AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -30,9 +39,13 @@ if (!app.Environment.IsDevelopment())
 app.AddStatusCodePage(); // Tùy biến
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -69,11 +82,18 @@ app.MapRazorPages();
 app.MapControllers();
 
 app.MapAreaControllerRoute(
-    name: "areas",
+    name: "areasData",
+    pattern: "{controller=Home}/{action=Index}/{id?}",
+    areaName: "DataBase"
+);
+    
+app.MapAreaControllerRoute(
+    name: "areasProduct",
     pattern: "{controller=Home}/{action=Index}/{id?}",
     areaName: "ProductManager"
-    );
-    
+);
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")

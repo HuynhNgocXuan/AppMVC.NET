@@ -5,6 +5,7 @@ namespace webMVC.Controllers
 {
     
     [Area("ProductManager")]
+    [Route("sanpham")]
     public class ProductController : Controller
     {
         private readonly ILogger _logger;

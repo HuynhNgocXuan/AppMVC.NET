@@ -44,7 +44,7 @@ public class FirstController : Controller
         if (product == null) 
         {
             _logger.LogInformation("Home xuan");
-            TempData["message"] = "Not Found";
+            TempData["statusMessage"] = "Not Found";
             var url = Url.Action("index", "Home");
             if (url == null) return View();
             return Redirect(url.ToString());    
