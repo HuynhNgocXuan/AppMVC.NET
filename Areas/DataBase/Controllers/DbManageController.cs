@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webMVC.Models;
@@ -10,10 +11,16 @@ namespace webMVC.Areas.DataBase.Controllers
     public class DbManageController : Controller
     {
         private readonly AppDbContext _dbContext;
+        private readonly ILogger _logger;
 
-        public DbManageController(AppDbContext dbContext)
+        [TempData]
+        public string statusMessage { get; set; }
+
+
+        public DbManageController(ILogger<DbManageController> logger, AppDbContext dbContext)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         // GET: DbManage 
@@ -26,11 +33,9 @@ namespace webMVC.Areas.DataBase.Controllers
         public IActionResult DeleteDb()
         {
             return View();
-        }
+        } 
 
-        [TempData]
-        public string statusMessage { get; set; }
-
+      
         [HttpPost]
         public async Task<IActionResult> DeleteDbAsync()
         {

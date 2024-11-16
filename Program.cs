@@ -8,8 +8,28 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
+
+
+
+
+
+
+builder.Logging.ClearProviders(); // Xóa các provider mặc định nếu cần
+builder.Logging.AddConsole(); //
+
+#pragma warning disable ASP0011 // Suggest using builder.Logging over Host.ConfigureLogging or WebHost.ConfigureLogging
+builder.Host.ConfigureLogging(logging =>
+{
+    logging.AddConsole();
+});
+#pragma warning restore ASP0011 // Suggest using builder.Logging over Host.ConfigureLogging or WebHost.ConfigureLogging
+
 builder.Services.AddDbContext<AppDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AppMvcConnectionString"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AppMvcConnectionString"))
+        .EnableSensitiveDataLogging() // Log thêm thông tin nhạy cảm (cân nhắc chỉ bật trong môi trường phát triển)
+        .EnableDetailedErrors();     // Log chi tiết lỗi EF Core (chỉ nên bật trong môi trường phát triển)
 });
 
 // builder.Services.AddIdentity<IdentityUser, IdentityRole>()
@@ -17,12 +37,22 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 //     .AddDefaultTokenProviders();
 
 // Add services to the container.
+
+
+
+
+
+
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddRazorPages();
+
 builder.Services.Configure<RazorViewEngineOptions>(option => {
     option.ViewLocationFormats.Add("/MyView/{1}/{0}" + RazorViewEngine.ViewExtension);
 });
+
 builder.Services.AddSingleton<ProductService>();
+
 builder.Services.AddSingleton<PlanetService>();
 
 
@@ -86,12 +116,7 @@ app.MapAreaControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}",
     areaName: "DataBase"
 );
-    
-app.MapAreaControllerRoute(
-    name: "areasProduct",
-    pattern: "{controller=Home}/{action=Index}/{id?}",
-    areaName: "ProductManager"
-);
+   
 
 
 app.MapControllerRoute(

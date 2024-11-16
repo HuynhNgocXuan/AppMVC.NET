@@ -28,8 +28,13 @@
                         </li>  
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Planet" asp-action="Index">Planet</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Contact" asp-controller="Contact" asp-action="Create">Contact</a>
                         </li>
-                        <partial name="_MenuDataBasePartial" />
+                        <li class="nav-item ms-5">
+                            <partial class="" name="_MenuDataBasePartial" />
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -49,6 +54,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.0/dist/jquery.validate.unobtrusive.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,43 @@
+@model webMVC.Models.Contact.ContactModel
+
+@{
+    ViewData["Title"] = "Gửi thông tin liên hệ";
+}
+
+
+<h4>@ViewData["Title"]</h4>
+<div class="row pb-3 ">
+    <div class="col-md-8 center">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group  mt-3 mb-3">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group mt-3 mb-3">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+             <div class="form-group  mt-3 mb-3">
+                <label asp-for="Message" class="control-label"></label>
+                <textarea rows="5" asp-for="Message" class="form-control" ></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3 mb-3">
+                <input type="submit" value="Gửi" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+

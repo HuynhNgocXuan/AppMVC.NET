@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using webMVC.Models.Contact;
 
 namespace webMVC.Models 
 {
     // App.Models.AppDbContext
     public class AppDbContext : DbContext
     {
+        public DbSet<ContactModel> Contacts{ get; set; }
+        
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
