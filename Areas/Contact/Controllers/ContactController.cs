@@ -65,10 +65,11 @@ namespace webMVC.Areas.Contact.Controllers
         {
             if (ModelState.IsValid)
             {
+                contactModel.DateTimeSend = DateTime.Now;
                 _context.Add(contactModel);
                 await _context.SaveChangesAsync();
                 statusMessage = "Gửi thành công";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
             return View(contactModel);
         }

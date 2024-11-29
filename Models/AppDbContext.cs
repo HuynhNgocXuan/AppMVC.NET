@@ -1,13 +1,15 @@
+using webMVC.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using webMVC.Models.Contact;
 
-namespace webMVC.Models 
+namespace webMVC.Models
 {
-    // App.Models.AppDbContext
-    public class AppDbContext : DbContext
+    // webMVC.Models.AppDbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
-        public DbSet<ContactModel> Contacts{ get; set; }
-        
+        public DbSet<ContactModel> Contacts { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -15,21 +17,21 @@ namespace webMVC.Models
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             base.OnConfiguring(builder);
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
-            // foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            // {
-            //     var tableName = entityType.GetTableName();
-            //     if (tableName.StartsWith("AspNet"))
-            //     {
-            //         entityType.SetTableName(tableName.Substring(6));
-            //     }
-            // }
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var tableName = entityType.GetTableName();
+                if (tableName.StartsWith("AspNet"))
+                {
+                    entityType.SetTableName(tableName.Substring(6));
+                }
+            }
 
         }
     }
