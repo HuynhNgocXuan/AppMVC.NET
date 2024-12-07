@@ -12,8 +12,8 @@ namespace webMVC.Areas.Identity.Models.ManageViewModels
     public class AddPhoneNumberViewModel
     {
         [Required]
-        [Phone]
+        [Phone(ErrorMessage = "Định dạng số điện thoại không hợp lệ.")]
         [Display(Name = "Số điện thoại")]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 }

@@ -10,8 +10,8 @@ namespace webMVC.Areas.Identity.Models.AccountViewModels
 
         [Required(ErrorMessage = "Phải nhập {0}")]
         [Display(Name = "Nhập mã phục hồi đã lưu")]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
     }
 }

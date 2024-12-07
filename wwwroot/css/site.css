@@ -79,3 +79,7 @@ body {
 a {
   text-decoration: none;
 }
+
+.margin {
+  margin: 8px 0;
+}

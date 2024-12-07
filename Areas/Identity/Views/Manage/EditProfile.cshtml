@@ -5,35 +5,40 @@
 
 <h4>@ViewData["Title"]</h4>
 
-<partial name="_StatusMessage" />
+@await Html.PartialAsync("_StatusMessage")
 
 <div class="row">
     <div class="col-md-6">
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group my-3">
                 <label asp-for="UserName"></label>
-                <input asp-for="UserName" class="form-control" disabled />
+                <input placeholder="@Html.DisplayNameFor(info => info.UserName)" asp-for="UserName" class="form-control"
+                    disabled />
             </div>
-            <div class="form-group">
+            <div class="form-group my-3">
                 <label asp-for="UserEmail"></label>
-                <input asp-for="UserEmail" class="form-control" disabled />
+                <input placeholder="@Html.DisplayNameFor(info => info.UserEmail)" asp-for="UserEmail"
+                    class="form-control" disabled />
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-3">
                 <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" disabled/>
+                <input placeholder="@Html.DisplayNameFor(info => info.PhoneNumber)" asp-for="PhoneNumber"
+                    class="form-control" disabled />
             </div>
-            <div class="form-group">
-                <label asp-for="HomeAdress"></label>
-                <textarea asp-for="HomeAdress" class="form-control"></textarea>
-                <span asp-validation-for="HomeAdress" class="text-danger"></span>
+            <div class="form-group my-3">
+                <label asp-for="HomeAddress"></label>
+                <input placeholder="@Html.DisplayNameFor(info => info.HomeAddress)" asp-for="HomeAddress"
+                    class="form-control" />
+                <span asp-validation-for="HomeAddress" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group my-3">
                 <label asp-for="BirthDate"></label>
-                <input asp-for="BirthDate" class="form-control" />
+                <input type="date" placeholder="@Html.DisplayNameFor(info => info.BirthDate)" asp-for="BirthDate"
+                    class="form-control" />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>            
+            </div>
 
             <button id="update-profile-button" type="submit" class="btn btn-primary">Lưu dữ liệu</button>
         </form>
@@ -43,6 +48,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
-
-

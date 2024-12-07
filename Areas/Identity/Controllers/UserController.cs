@@ -253,30 +253,30 @@ namespace webMVC.Areas.Identity.Controllers
             return RedirectToAction("AddRole", new { id = user.Id });
         }
 
-        [HttpGet("{claimid}")]
-        public async Task<IActionResult> EditClaim(int claimid)
+        [HttpGet("{claimed}")]
+        public async Task<IActionResult> EditClaim(int claimed)
         {
-            var userclaim = _context.UserClaims.Where(c => c.Id == claimid).FirstOrDefault();
-            var user = await _userManager.FindByIdAsync(userclaim.UserId);
+            var userClaim = _context.UserClaims.Where(c => c.Id == claimed).FirstOrDefault();
+            var user = await _userManager.FindByIdAsync(userClaim.UserId);
 
             if (user == null) return NotFound("Không tìm thấy user");
 
             var model = new AddUserClaimModel()
             {
-                ClaimType = userclaim.ClaimType,
-                ClaimValue = userclaim.ClaimValue
+                ClaimType = userClaim.ClaimType,
+                ClaimValue = userClaim.ClaimValue
 
             };
             ViewBag.user = user;
-            ViewBag.userclaim = userclaim;
+            ViewBag.userClaim = userClaim;
             return View("AddClaim", model);
         }
-        [HttpPost("{claimid}")]
+        [HttpPost("{claimed}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditClaim(int claimid, AddUserClaimModel model)
+        public async Task<IActionResult> EditClaim(int claimed, AddUserClaimModel model)
         {
-            var userclaim = _context.UserClaims.Where(c => c.Id == claimid).FirstOrDefault();
-            var user = await _userManager.FindByIdAsync(userclaim.UserId);
+            var userClaim = _context.UserClaims.Where(c => c.Id == claimed).FirstOrDefault();
+            var user = await _userManager.FindByIdAsync(userClaim.UserId);
             if (user == null) return NotFound("Không tìm thấy user");
 
             if (!ModelState.IsValid) return View("AddClaim", model);
@@ -284,34 +284,34 @@ namespace webMVC.Areas.Identity.Controllers
             if (_context.UserClaims.Any(c => c.UserId == user.Id
                 && c.ClaimType == model.ClaimType
                 && c.ClaimValue == model.ClaimValue
-                && c.Id != userclaim.Id))
+                && c.Id != userClaim.Id))
             {
                 ModelState.AddModelError("Claim này đã có");
                 return View("AddClaim", model);
             }
 
 
-            userclaim.ClaimType = model.ClaimType;
-            userclaim.ClaimValue = model.ClaimValue;
+            userClaim.ClaimType = model.ClaimType;
+            userClaim.ClaimValue = model.ClaimValue;
 
             await _context.SaveChangesAsync();
             StatusMessage = "Bạn vừa cập nhật claim";
 
 
             ViewBag.user = user;
-            ViewBag.userclaim = userclaim;
+            ViewBag.userClaim = userClaim;
             return RedirectToAction("AddRole", new { id = user.Id });
         }
-        [HttpPost("{claimid}")]
+        [HttpPost("{claimed}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteClaimAsync(int claimid)
+        public async Task<IActionResult> DeleteClaimAsync(int claimed)
         {
-            var userclaim = _context.UserClaims.Where(c => c.Id == claimid).FirstOrDefault();
-            var user = await _userManager.FindByIdAsync(userclaim.UserId);
+            var userClaim = _context.UserClaims.Where(c => c.Id == claimed).FirstOrDefault();
+            var user = await _userManager.FindByIdAsync(userClaim.UserId);
 
             if (user == null) return NotFound("Không tìm thấy user");
 
-            await _userManager.RemoveClaimAsync(user, new Claim(userclaim.ClaimType, userclaim.ClaimValue));
+            await _userManager.RemoveClaimAsync(user, new Claim(userClaim.ClaimType, userClaim.ClaimValue));
 
             StatusMessage = "Bạn đã xóa claim";
 

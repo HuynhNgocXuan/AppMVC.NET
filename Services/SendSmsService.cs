@@ -18,16 +18,16 @@ public class SendSmsService : ISmsSender
         _logger = logger;
     }
 
-    public Task SendSmsAsync(string number, string message)
+    public async Task SendSmsAsync(string number, string message)
     {
         if (string.IsNullOrWhiteSpace(number)) throw new ArgumentException("Phone number cannot be null or empty", nameof(number));
         if (string.IsNullOrWhiteSpace(message)) throw new ArgumentException("Message cannot be null or empty", nameof(message));
 
         try
         {
-            var savePath = Path.Combine("MailsSave", $"{number}-{Guid.NewGuid()}.txt");
             Directory.CreateDirectory("MailsSave");
-            File.WriteAllText(savePath, message);
+            var savePath = Path.Combine("MailsSave", $"{number}-{Guid.NewGuid()}.txt");
+            await File.WriteAllTextAsync(savePath, message);
             _logger.LogInformation($"SMS saved to {savePath} for number {number}.");
         }
         catch (Exception ex)
@@ -36,6 +36,5 @@ public class SendSmsService : ISmsSender
             throw;
         }
 
-        return Task.CompletedTask;
     }
 }

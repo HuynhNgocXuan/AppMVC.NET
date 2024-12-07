@@ -37,10 +37,8 @@ namespace webMVC.Utilities
 
     private static bool ValidateEmailFormat(string email)
     {
-      const string emailRegexPattern =
-               @"^(?("")(""[^""]+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#$%&'*+/=?^_`{|}~])*[0-9a-zA-Z])@))" +
-               @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-0-9a-zA-Z]*[0-9a-zA-Z]*\.)+[a-zA-Z]{2,}))$";
-
+      const string emailRegexPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+ 
       try
       {
         return Regex.IsMatch(email, emailRegexPattern, RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));

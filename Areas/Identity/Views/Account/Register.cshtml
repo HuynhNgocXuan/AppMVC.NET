@@ -12,6 +12,7 @@
         <section>
             <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]"
                 method="post" class="form-horizontal" role="form">
+                @Html.AntiForgeryToken()
                 <h4>Tạo tài khoản mới trên website.</h4>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>

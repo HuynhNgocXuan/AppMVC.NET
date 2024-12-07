@@ -1,0 +1,20 @@
+@model ResetAuthenticatorKeyViewModel
+
+<h3 class="text-center my-4">Thiết lập xác thực hai yếu tố</h3>
+
+<p class="text-center mb-4">Quét mã QR bằng ứng dụng xác thực của bạn (Google Authenticator, Microsoft Authenticator,
+    v.v.).</p>
+
+<div class="text-center mb-4">
+    <img src="@Model.QrCodeBase64" alt="QR Code xác thực" class="img-fluid" style="max-width: 200px;">
+</div>
+
+<p class="text-center mb-4">Hoặc nhập thủ công mã xác thực:</p>
+
+<pre class="text-center bg-light p-3 rounded">@Model.AuthenticatorKey</pre>
+
+<form asp-controller="Manage" asp-action="EnableTwoFactorAuthentication" method="post"
+    class="d-flex flex-column align-items-center">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary btn-sm w-100">Kích hoạt xác thực hai yếu tố</button>
+</form>

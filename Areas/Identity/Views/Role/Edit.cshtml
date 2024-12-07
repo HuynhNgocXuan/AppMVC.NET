@@ -25,7 +25,7 @@
         </form>
         <hr>
         <p>Các đặc tính  (claim) của role:
-            <a asp-action="AddRoleClaim" asp-route-roleid="@Model.role.Id">+ Thêm claim</a>
+            <a asp-action="AddRoleClaim" asp-route-roleId="@Model.role.Id">+ Thêm claim</a>
         </p>
         @if (Model.Claims.Count > 0)
         {
@@ -33,7 +33,7 @@
                 @foreach (var claim in Model.Claims)
                 {
                     <li>
-                        <a asp-action="EditRoleClaim" asp-route-claimid="@claim.Id">
+                        <a asp-action="EditRoleClaim" asp-route-claimed="@claim.Id">
                             @claim.ClaimType  : @claim.ClaimValue
                         </a>
                         

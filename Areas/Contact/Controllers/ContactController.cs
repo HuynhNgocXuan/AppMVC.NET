@@ -17,7 +17,7 @@ namespace webMVC.Areas.Contact.Controllers
         private readonly AppDbContext _context;
 
         [TempData]
-        public string statusMessage { get; set; }
+        public string? statusMessage { get; set; }
 
 
 
@@ -29,7 +29,7 @@ namespace webMVC.Areas.Contact.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Contacts.ToListAsync());
+            return View(await _context.Contacts!.ToListAsync());
         }
 
         // GET: Contact/Details/5
@@ -40,7 +40,7 @@ namespace webMVC.Areas.Contact.Controllers
                 return NotFound();
             }
 
-            var contactModel = await _context.Contacts
+            var contactModel = await _context.Contacts!
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contactModel == null)
             {
@@ -57,8 +57,6 @@ namespace webMVC.Areas.Contact.Controllers
         }
 
         // POST: Contact/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Email,Message,Phone")] ContactModel contactModel)
@@ -85,7 +83,7 @@ namespace webMVC.Areas.Contact.Controllers
                 return NotFound();
             }
 
-            var contactModel = await _context.Contacts
+            var contactModel = await _context.Contacts!
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contactModel == null)
             {
@@ -100,7 +98,7 @@ namespace webMVC.Areas.Contact.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contactModel = await _context.Contacts.FindAsync(id);
+            var contactModel = await _context.Contacts!.FindAsync(id);
             if (contactModel != null)
             {
                 _context.Contacts.Remove(contactModel);

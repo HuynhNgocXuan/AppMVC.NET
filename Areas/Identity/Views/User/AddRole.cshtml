@@ -13,10 +13,11 @@
 
             <div class="form-group">
                 <label asp-for="RoleNames"></label>
-                @Html.ListBoxFor(m => m.RoleNames, (IEnumerable<SelectListItem>)ViewBag.allRoles, new {
-                    id = "id-select-roles",
-                    @class = "w-100"
-                })
+                @Html.ListBoxFor(m => m.RoleNames, (IEnumerable<SelectListItem>)ViewBag.allRoles, new
+                    {
+                        id = "id-select-roles",
+                        @class = "w-100"
+                    })
                 <span asp-validation-for="RoleNames" class="text-danger"></span>
             </div>
 
@@ -25,7 +26,7 @@
         </form>
         <hr>
         <p>Các claim của user có được từ role:</p>
-        @if (Model.claimsInRole.Count >  0)
+        @if (Model.claimsInRole.Count > 0)
         {
             <ul>
                 @foreach (var claim in Model.claimsInRole)
@@ -36,15 +37,15 @@
         }
         <hr>
         <p>Các claim riêng:
-            <a asp-action="AddClaim" asp-route-userid="@Model.user.Id">+ Thêm claim riêng</a>     
+            <a asp-action="AddClaim" asp-route-userid="@Model.user.Id">+ Thêm claim riêng</a>
         </p>
-        @if (Model.claimsInUserClaim.Count >  0)
+        @if (Model.claimsInUserClaim.Count > 0)
         {
             <ul>
                 @foreach (var claim in Model.claimsInUserClaim)
                 {
                     <li>
-                        <a asp-action="EditClaim" asp-route-claimid="@claim.Id">@claim.ClaimType : @claim.ClaimValue</a>
+                        <a asp-action="EditClaim" asp-route-claimed="@claim.Id">@claim.ClaimType : @claim.ClaimValue</a>
                     </li>
                 }
             </ul>

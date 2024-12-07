@@ -1,7 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace webMVC.Areas.Identity.Models.AccountViewModels
 {
@@ -9,9 +6,9 @@ namespace webMVC.Areas.Identity.Models.AccountViewModels
     {
         [Required(ErrorMessage = "Phải nhập {0}")]
         [Display(Name = "Nhập mã đã lưu")]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
 
         [Display(Name = "Nhớ thông tin trình duyệt này?")]
         public bool RememberBrowser { get; set; }

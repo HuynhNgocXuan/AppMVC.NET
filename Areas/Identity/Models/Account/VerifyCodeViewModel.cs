@@ -1,19 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace webMVC.Areas.Identity.Models.AccountViewModels
 {
     public class VerifyCodeViewModel
     {
-        [Required]
-        public string Provider { get; set; }
+        [Required(ErrorMessage = "Không có nhà cung cấp!")]
+        public string? Provider { get; set; }
 
-        [Required]
-        public string Code { get; set; }
 
-        public string ReturnUrl { get; set; }
+        [DisplayName("Code")]
+        [Required(ErrorMessage = "Phải nhập {0}")]
+        public string? Code { get; set; }
+
+        public string? ReturnUrl { get; set; }
 
         [Display(Name = "Nhớ cho trình duyệt này?")]
         public bool RememberBrowser { get; set; }

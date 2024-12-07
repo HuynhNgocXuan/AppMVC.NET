@@ -7,6 +7,7 @@ using webMVC.ExtendMethods;
 using webMVC.Data;
 using webMVC.Services;
 using webMVC.Models;
+using Microsoft.Extensions.Options;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,15 @@ builder.Host.ConfigureLogging(logging =>
 
 
 builder.Services.AddOptions();
+
+
+builder.Services.Configure<EncryptionSettingsModel>(builder.Configuration.GetSection("EncryptionSettings"));
+builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+
+
+builder.Services.AddScoped<IQRCodeService, QRCodeService>();
+
+
 var mailSetting = builder.Configuration.GetSection("MailSettings");
 builder.Services.Configure<MailSettings>(mailSetting);
 builder.Services.AddSingleton<IEmailSender, SendMailService>();
@@ -66,7 +76,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
+    options.Password.RequireLowercase = true; 
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 8;
@@ -92,6 +102,11 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/login/";
     options.LogoutPath = "/logout/";
     options.AccessDeniedPath = "/khongduoctruycap.html";
+    options.SlidingExpiration = true; // Tự động gia hạn cookie nếu người dùng hoạt động
+    options.Cookie.HttpOnly = true; // Chỉ truy cập từ phía server
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Chỉ gửi qua HTTPS
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); 
 });
 
 builder.Services.AddAuthentication()
@@ -110,8 +125,8 @@ builder.Services.AddAuthentication()
        options.AppSecret = facebookConfig["AppSecret"] ?? throw new InvalidOperationException("Facebook configuration section is missing AppSecret.");
        options.CallbackPath = "/dang-nhap-tu-facebook";
    })
-   // .AddTwitter()
-   // .AddMicrosoftAccount()
+//  .AddTwitter()
+//  .AddMicrosoftAccount()
    ;
 
 builder.Services.AddSingleton<IdentityErrorDescriber, AppIdentityErrorDescriber>();
@@ -127,13 +142,28 @@ builder.Services.AddAuthorization(options =>
 });
 
 
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    
+    options.MinimumSameSitePolicy = SameSiteMode.Lax;
+});
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(24);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.IsEssential = true;
+});
 
 
 
 
 
 var app = builder.Build();
+
 
 if (!app.Environment.IsDevelopment())
 {
@@ -149,11 +179,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
+app.UseCookiePolicy();
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
 
 
 

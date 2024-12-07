@@ -33,26 +33,35 @@ namespace webMVC.Areas.Identity.Controllers
 
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
         public AccountController(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            ISmsSender smsSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _smsSender = smsSender;
             _logger = logger;
         }
 
         // GET: /Account/Login
         [HttpGet("/login/")]
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login(string? returnUrl = null)
         {
+            returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
+            if (User.Identity == null) return View();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                return LocalRedirect(returnUrl);
+            }
             return View();
         }
 
@@ -61,47 +70,62 @@ namespace webMVC.Areas.Identity.Controllers
         [HttpPost("/login/")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
-
-                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: true);
-                if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
-                {
-                    var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
-                    if (user != null)
-                    {
-                        if (user.UserName != null)
-                            result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
-                    }
-                }
-
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation(1, "User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                }
-
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "Tài khoản bị khóa");
-                    return View("Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError("Không đăng nhập được.");
-                    return View(model);
-                }
+                ModelState.AddModelError(string.Empty, "Thông tin đăng nhập không hợp lệ.");
+                return View(model);
             }
+
+            if (string.IsNullOrEmpty(model?.UserNameOrEmail))
+            {
+                ModelState.AddModelError(string.Empty, "Email hoặc tên người dùng không được để trống.");
+                return View(model);
+            }
+            var user = AppUtilities.IsValidEmail(model.UserNameOrEmail)
+                ? await _userManager.FindByEmailAsync(model.UserNameOrEmail)
+                : await _userManager.FindByNameAsync(model.UserNameOrEmail);
+
+
+            if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+            {
+                ModelState.AddModelError(string.Empty, "Email chưa được xác nhận.");
+                return View(model);
+            }
+
+            if (user.UserName == null)
+                return View(model);
+
+            var result = await _signInManager.PasswordSignInAsync(
+                user.UserName,
+                model.Password,
+                model.RememberMe,
+                lockoutOnFailure: true);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("Đăng nhập thành công.");
+                return LocalRedirect(returnUrl);
+            }
+
+            if (result.RequiresTwoFactor)
+                return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+
+            if (result.IsLockedOut)
+            {
+                _logger.LogWarning("Tài khoản bị khóa.");
+                return View("Lockout");
+            }
+
+            ModelState.AddModelError(string.Empty, "Thông tin đăng nhập không chính xác.");
             return View(model);
         }
+
+
 
         // POST: /Account/LogOff
         [HttpPost("/logout/")]
@@ -117,10 +141,14 @@ namespace webMVC.Areas.Identity.Controllers
         // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Register(string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
+            if (User.Identity!.IsAuthenticated)
+            {
+                return LocalRedirect(returnUrl);
+            }
             return View();
         }
         //
@@ -128,7 +156,7 @@ namespace webMVC.Areas.Identity.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
@@ -156,6 +184,9 @@ namespace webMVC.Areas.Identity.Controllers
                                 code
                             },
                         protocol: Request.Scheme);
+
+                    if (callBackUrl == null) return View();
+
                     string stringHtml = @$"Bạn đã đăng ký tài khoản trên webMVC, hãy <a href='{HtmlEncoder.Default.Encode(callBackUrl)}'>bấm vào đây</a> để kích hoạt tài khoản.";
                     string stringSubject = "Xác nhận địa chỉ email";
                     await _emailSender.SendEmailAsync(model.Email, stringSubject, stringHtml);
@@ -221,7 +252,7 @@ namespace webMVC.Areas.Identity.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        public IActionResult ExternalLogin(string provider, string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
@@ -232,7 +263,7 @@ namespace webMVC.Areas.Identity.Controllers
         // GET: /Account/ExternalLoginCallback  
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null, string? remoteError = null)
         {
             returnUrl ??= Url.Content("~/");
             if (remoteError != null)
@@ -269,6 +300,7 @@ namespace webMVC.Areas.Identity.Controllers
                 ViewData["ReturnUrl"] = returnUrl;
                 ViewData["ProviderDisplayName"] = info.ProviderDisplayName;
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (email == null) return View();
                 return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
             }
         }
@@ -278,7 +310,7 @@ namespace webMVC.Areas.Identity.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl = null)
+        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
@@ -291,8 +323,8 @@ namespace webMVC.Areas.Identity.Controllers
                     return View("ExternalLoginFailure");
                 }
 
-                string externalEmail = null;
-                AppUser externalEmailUser = null;
+                string? externalEmail = null;
+                AppUser? externalEmailUser = null;
 
                 // Lấy email từ dịch vụ ngoài (và kiểm tra xem có hợp lệ không)
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
@@ -433,6 +465,10 @@ namespace webMVC.Areas.Identity.Controllers
                     action: nameof(ResetPassword),
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
+
+
+                if (callbackUrl == null) return View();
+
                 var stringHtml = $"Hãy bấm <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>vào đây</a> để đặt lại mật khẩu.";
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password", stringHtml);
 
@@ -454,7 +490,7 @@ namespace webMVC.Areas.Identity.Controllers
         // GET: /Account/ResetPassword
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string? code = null)
         {
             return code == null ? View("Error") : View();
         }
@@ -514,7 +550,7 @@ namespace webMVC.Areas.Identity.Controllers
         // GET: /Account/SendCode
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> SendCode(string returnUrl = null, bool rememberMe = false)
+        public async Task<ActionResult> SendCode(string? returnUrl = null, bool rememberMe = false)
         {
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
@@ -532,38 +568,35 @@ namespace webMVC.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendCode(SendCodeViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+            if (!ModelState.IsValid) return View();
 
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                return View("Error");
-            }
-            // Dùng mã Authenticator
+            if (user == null) return View("Error");
+
+            if (model.SelectedProvider == null) return View("Error");
+
             if (model.SelectedProvider == "Authenticator")
             {
                 return RedirectToAction(nameof(VerifyAuthenticatorCode), new { ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
             }
 
-            // Generate the token and send it
             var code = await _userManager.GenerateTwoFactorTokenAsync(user, model.SelectedProvider);
-            if (string.IsNullOrWhiteSpace(code))
-            {
-                return View("Error");
-            }
+            if (string.IsNullOrWhiteSpace(code)) return View("Error");
+
 
             var message = "Your security code is: " + code;
+
+
+            var email = await _userManager.GetEmailAsync(user);
+            if (email == null) return View();
             if (model.SelectedProvider == "Email")
-            {
-                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
-            }
+                await _emailSender.SendEmailAsync(email, "Security Code", message);
+
+
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            if (phoneNumber == null) return View();
             else if (model.SelectedProvider == "Phone")
-            {
-                await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
-            }
+                await _smsSender.SendSmsAsync(phoneNumber, message);
 
             return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
@@ -571,63 +604,94 @@ namespace webMVC.Areas.Identity.Controllers
         // GET: /Account/VerifyCode
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> VerifyCode(string provider, bool rememberMe, string returnUrl = null)
+        public async Task<IActionResult> VerifyCode(string provider, bool rememberMe, string? returnUrl = null)
         {
-            // Require that the user has already logged in via username/password or external login
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
                 return View("Error");
             }
+            if (returnUrl == null) return View();
+
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
         //
         // POST: /Account/VerifyCode
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyCode(VerifyCodeViewModel model)
         {
             model.ReturnUrl ??= Url.Content("~/");
+
             if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    _logger.LogError($"Error: {error.ErrorMessage}");
+                    ModelState.AddModelError(string.Empty, "The data provided is invalid." + error.ErrorMessage);
+                }
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes.
-            // If a user enters incorrect codes for a specified amount of time then the user account
-            // will be locked out for a specified amount of time.
-            var result = await _signInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
-            if (result.Succeeded)
+            try
             {
-                return LocalRedirect(model.ReturnUrl);
+                var result = await _signInManager.TwoFactorSignInAsync(
+                    model.Provider!,
+                    model.Code!,
+                    model.RememberMe,
+                    model.RememberBrowser);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("2FA sign-in succeeded for user.");
+
+                    if (Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        _logger.LogInformation("Redirecting to local ReturnUrl: {ReturnUrl}", model.ReturnUrl);
+                        return LocalRedirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        _logger.LogWarning("ReturnUrl is not local. Redirecting to default home.");
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning(7, "User account locked out.");
+                    return View("Lockout");
+                }
+
+                _logger.LogWarning("Invalid 2FA code entered for provider: {Provider}", model.Provider);
+                ModelState.AddModelError(string.Empty, "Invalid verification code. Please try again.");
             }
-            if (result.IsLockedOut)
+            catch (Exception ex)
             {
-                _logger.LogWarning(7, "User account locked out.");
-                return View("Lockout");
+                _logger.LogError(ex, "Unexpected error occurred during 2FA verification.");
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Invalid code.");
-                return View(model);
-            }
+
+            _logger.LogDebug("Returning view with error model state.");
+            return View(model);
         }
+
+
 
         //
         // GET: /Account/VerifyAuthenticatorCode
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> VerifyAuthenticatorCode(bool rememberMe, string returnUrl = null)
+        public async Task<IActionResult> VerifyAuthenticatorCode(bool rememberMe, string? returnUrl = null)
         {
-            // Require that the user has already logged in via username/password or external login
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
                 return View("Error");
             }
-            return View(new VerifyAuthenticatorCodeViewModel { ReturnUrl = returnUrl, RememberMe = rememberMe });
+            return View(new VerifyAuthenticatorCodeViewModel { ReturnUrl = returnUrl!, RememberMe = rememberMe });
         }
 
         //
@@ -638,43 +702,60 @@ namespace webMVC.Areas.Identity.Controllers
         public async Task<IActionResult> VerifyAuthenticatorCode(VerifyAuthenticatorCodeViewModel model)
         {
             model.ReturnUrl ??= Url.Content("~/");
-            if (!ModelState.IsValid)
+
+            if (!ModelState.IsValid) 
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    _logger.LogError($"Error: {error.ErrorMessage}");
+                    ModelState.AddModelError(string.Empty, "The data provided is invalid." + error.ErrorMessage);
+                }
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes.
-            // If a user enters incorrect codes for a specified amount of time then the user account
-            // will be locked out for a specified amount of time.
-            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, model.RememberMe, model.RememberBrowser);
-            if (result.Succeeded)
+            try
             {
-                return LocalRedirect(model.ReturnUrl);
+                var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(
+                    model.Code!,
+                    model.RememberMe,
+                    model.RememberBrowser
+                );
+
+                if (result.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Xác thực thành công!");
+                    return LocalRedirect(model.ReturnUrl);
+                }
+
+                if (result.IsLockedOut)
+                {
+                    return View("Lockout");
+                }
+
+                ModelState.AddModelError(string.Empty, "Mã xác thực không hợp lệ. Vui lòng thử lại.");
             }
-            if (result.IsLockedOut)
+            catch (Exception ex)
             {
-                _logger.LogWarning(7, "User account locked out.");
-                return View("Lockout");
+                _logger.LogError(ex, "Lỗi xảy ra trong quá trình xác minh mã xác thực.");
+                ModelState.AddModelError(string.Empty, "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.");
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Mã sai.");
-                return View(model);
-            }
+
+            return View(model);
         }
+
+
         //
         // GET: /Account/UseRecoveryCode
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> UseRecoveryCode(string returnUrl = null)
+        public async Task<IActionResult> UseRecoveryCode(string? returnUrl = null)
         {
-            // Require that the user has already logged in via username/password or external login
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
                 return View("Error");
             }
-            return View(new UseRecoveryCodeViewModel { ReturnUrl = returnUrl });
+            return View(new UseRecoveryCodeViewModel { ReturnUrl = returnUrl! });
         }
 
         //
@@ -685,22 +766,29 @@ namespace webMVC.Areas.Identity.Controllers
         public async Task<IActionResult> UseRecoveryCode(UseRecoveryCodeViewModel model)
         {
             model.ReturnUrl ??= Url.Content("~/");
+
             if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    _logger.LogError($"ModelState Error: {error.ErrorMessage}");
+                }
+                ModelState.AddModelError(string.Empty, "Dữ liệu nhập vào không hợp lệ.");
                 return View(model);
             }
 
-            var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(model.Code);
+            var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(model.Code!);
+
             if (result.Succeeded)
             {
                 return LocalRedirect(model.ReturnUrl);
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Sai mã phục hồi.");
-                return View(model);
-            }
+
+            _logger.LogWarning("Sai mã phục hồi.");
+            ModelState.AddModelError(string.Empty, "Sai mã phục hồi. Vui lòng kiểm tra lại.");
+            return View(model);
         }
+
 
         [Route("/khongduoctruycap.html")]
         [AllowAnonymous]

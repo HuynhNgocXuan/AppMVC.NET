@@ -6,16 +6,16 @@ namespace webMVC.Areas.Identity.Models.ManageViewModels
   public class EditExtraProfileModel
   {
     [Display(Name = "Tên tài khoản")]
-    public string UserName { get; set; }
+    public string? UserName { get; set; }
 
     [Display(Name = "Địa chỉ email")]
-    public string UserEmail { get; set; }
+    public string? UserEmail { get; set; }
     [Display(Name = "Số điện thoại")]
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
     [Display(Name = "Địa chỉ")]
     [StringLength(400)]
-    public string HomeAdress { get; set; }
+    public string? HomeAddress { get; set; }
 
 
     [Display(Name = "Ngày sinh")]
