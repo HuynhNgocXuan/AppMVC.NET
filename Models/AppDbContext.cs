@@ -11,7 +11,7 @@ namespace webMVC.Models
         public DbSet<ContactModel>? Contacts { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
+        { 
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
@@ -27,7 +27,7 @@ namespace webMVC.Models
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 var tableName = entityType.GetTableName();
-                if (tableName.StartsWith("AspNet"))
+                if (tableName!.StartsWith("AspNet"))
                 {
                     entityType.SetTableName(tableName.Substring(6));
                 }

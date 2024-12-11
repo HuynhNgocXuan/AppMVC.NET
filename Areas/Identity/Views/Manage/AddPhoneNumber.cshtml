@@ -3,7 +3,7 @@
     ViewData["Title"] = "Thêm số điện thoại";
 }
 
-<h1>@ViewData["Title"].</h1>
+<h2>@ViewData["Title"].</h2>
 <form asp-controller="Manage" asp-action="AddPhoneNumber" method="post" class="form-horizontal" role="form">
     @Html.AntiForgeryToken()
     <h4>Thêm số điện thoại.</h4>
@@ -25,5 +25,7 @@
 </form>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

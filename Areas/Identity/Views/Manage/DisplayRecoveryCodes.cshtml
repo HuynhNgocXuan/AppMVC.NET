@@ -3,7 +3,7 @@
     ViewData["Title"] = "Mã phục hồi";
 }
 
-<h1>@ViewData["Title"].</h1>
+<h2>@ViewData["Title"].</h2>
 <p class="text-success">@ViewData["StatusMessage"]</p>
 
 <div>
@@ -14,9 +14,9 @@
         <dt>Codes:</dt>
         @foreach (var code in Model.Codes)
         {
-        <dd>
-            <text>@code</text>
-        </dd>
+            <dd>
+                <text>@code</text>
+            </dd>
         }
     </dl>
 </div>

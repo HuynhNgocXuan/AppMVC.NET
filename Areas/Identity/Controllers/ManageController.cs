@@ -83,7 +83,7 @@ namespace webMVC.Areas.Identity.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Không thể giải mã số điện thoại.");
                 }
-            }
+            } 
 
             var model = new IndexViewModel
             {
@@ -184,12 +184,12 @@ namespace webMVC.Areas.Identity.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
+            } 
 
             var user = await GetCurrentUserAsync();
             if (user != null)
             {
-                var result = await _userManager.AddPasswordAsync(user, model.NewPassword);
+                var result = await _userManager.AddPasswordAsync(user, model.NewPassword!);
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);

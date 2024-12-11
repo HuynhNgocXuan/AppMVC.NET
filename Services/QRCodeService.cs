@@ -1,25 +1,29 @@
 using QRCoder;
 
 
-public interface IQRCodeService
+namespace webMVC.Services
 {
-    string GenerateQrCode(string qrCodeUri);
-}
 
-public class QRCodeService : IQRCodeService
-{
-    public string GenerateQrCode(string qrCodeUri)
+    public interface IQRCodeService
     {
-        if (string.IsNullOrWhiteSpace(qrCodeUri))
-            throw new ArgumentException("QR Code URI cannot be null or empty.", nameof(qrCodeUri));
+        string GenerateQrCode(string qrCodeUri);
+    }
 
-        using (var qrGenerator = new QRCodeGenerator())
+    public class QRCodeService : IQRCodeService
+    {
+        public string GenerateQrCode(string qrCodeUri)
         {
-            var qrCodeData = qrGenerator.CreateQrCode(qrCodeUri, QRCodeGenerator.ECCLevel.Q);
-            using (var qrCode = new PngByteQRCode(qrCodeData))
+            if (string.IsNullOrWhiteSpace(qrCodeUri))
+                throw new ArgumentException("QR Code URI cannot be null or empty.", nameof(qrCodeUri));
+
+            using (var qrGenerator = new QRCodeGenerator())
             {
-                var qrCodeImage = qrCode.GetGraphic(20);
-                return $"data:image/png;base64,{Convert.ToBase64String(qrCodeImage)}";
+                var qrCodeData = qrGenerator.CreateQrCode(qrCodeUri, QRCodeGenerator.ECCLevel.Q);
+                using (var qrCode = new PngByteQRCode(qrCodeData))
+                {
+                    var qrCodeImage = qrCode.GetGraphic(20);
+                    return $"data:image/png;base64,{Convert.ToBase64String(qrCodeImage)}";
+                }
             }
         }
     }

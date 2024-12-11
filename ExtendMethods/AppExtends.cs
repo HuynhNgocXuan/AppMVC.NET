@@ -23,7 +23,7 @@ namespace webMVC.ExtendMethods
                         </style>
                     </head>
                     <body>
-                        <h1>Có lỗi {statusCode} - {(HttpStatusCode)statusCode}</h1>
+                        <h2>Có lỗi {statusCode} - {(HttpStatusCode)statusCode}</h2>
                     </body>
                     </html>";
 

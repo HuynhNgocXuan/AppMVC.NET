@@ -102,11 +102,11 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/login/";
     options.LogoutPath = "/logout/";
     options.AccessDeniedPath = "/khongduoctruycap.html";
-    options.SlidingExpiration = true; // Tự động gia hạn cookie nếu người dùng hoạt động
-    options.Cookie.HttpOnly = true; // Chỉ truy cập từ phía server
+    options.SlidingExpiration = true;
+    options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Lax;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Chỉ gửi qua HTTPS
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); 
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 });
 
 builder.Services.AddAuthentication()
@@ -125,29 +125,16 @@ builder.Services.AddAuthentication()
        options.AppSecret = facebookConfig["AppSecret"] ?? throw new InvalidOperationException("Facebook configuration section is missing AppSecret.");
        options.CallbackPath = "/dang-nhap-tu-facebook";
    })
+    .AddCookie(options =>
+    {
+
+        options.SlidingExpiration = false; 
+        options.Cookie.SameSite = SameSiteMode.Strict;
+    })
 //  .AddTwitter()
 //  .AddMicrosoftAccount()
-   ;
+;
 
-builder.Services.AddSingleton<IdentityErrorDescriber, AppIdentityErrorDescriber>();
-
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("ViewManageMenu", builder =>
-    {
-        builder.RequireAuthenticatedUser();
-        builder.RequireRole(RoleName.Administrator);
-    });
-});
-
-
-builder.Services.Configure<CookiePolicyOptions>(options =>
-{
-    options.CheckConsentNeeded = context => true;
-    
-    options.MinimumSameSitePolicy = SameSiteMode.Lax;
-});
 
 builder.Services.AddSession(options =>
 {
@@ -156,6 +143,22 @@ builder.Services.AddSession(options =>
     options.Cookie.SameSite = SameSiteMode.Lax;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     options.Cookie.IsEssential = true;
+});
+
+builder.Services.AddSingleton<IdentityErrorDescriber, AppIdentityErrorDescriber>();
+
+
+builder.Services.AddAuthorization(options =>
+{
+    AuthorizationPolicyProvider.AddCustomPolicies(options);
+});
+ 
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    
+    options.MinimumSameSitePolicy = SameSiteMode.Lax;
 });
 
 

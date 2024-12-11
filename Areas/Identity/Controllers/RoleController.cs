@@ -41,7 +41,7 @@ namespace webMVC.Areas.Identity.Controllers
         }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
         //
         // GET: /Role/Index
@@ -54,7 +54,7 @@ namespace webMVC.Areas.Identity.Controllers
             foreach (var _r in r)
             {
                 var claims = await _roleManager.GetClaimsAsync(_r);
-                var claimsString = claims.Select(c => c.Type + "=" + c.Value);
+                var claimsString = claims.Select(c => c.Type + " = " + c.Value);
 
                 var rm = new RoleModel()
                 {
@@ -85,7 +85,7 @@ namespace webMVC.Areas.Identity.Controllers
                 return View();
             }
 
-            var newRole = new IdentityRole(model.Name);
+            var newRole = new IdentityRole(model.Name!);
             var result = await _roleManager.CreateAsync(newRole);
             if (result.Succeeded)
             {
@@ -99,41 +99,32 @@ namespace webMVC.Areas.Identity.Controllers
             return View();
         }
 
-        // GET: /Role/Delete/roleId
-        [HttpGet("{roleId}")]
-        public async Task<IActionResult> DeleteAsync(string roleId)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string roleId)
         {
-            if (roleId == null) return NotFound("Không tìm thấy role");
+            if (string.IsNullOrEmpty(roleId))
+                return NotFound("Không tìm thấy role");
+
             var role = await _roleManager.FindByIdAsync(roleId);
             if (role == null)
-            {
                 return NotFound("Không tìm thấy role");
-            }
-            return View(role);
-        }
-
-        // POST: /Role/Edit/1
-        [HttpPost("{roleId}"), ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmAsync(string roleId)
-        {
-            if (roleId == null) return NotFound("Không tìm thấy role");
-            var role = await _roleManager.FindByIdAsync(roleId);
-            if (role == null) return NotFound("Không tìm thấy role");
 
             var result = await _roleManager.DeleteAsync(role);
 
             if (result.Succeeded)
             {
-                StatusMessage = $"Bạn vừa xóa: {role.Name}";
+                TempData["StatusMessage"] = $"Bạn vừa xóa vai trò: {role.Name}";
                 return RedirectToAction(nameof(Index));
             }
-            else
+
+            foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(result);
+                ModelState.AddModelError(string.Empty, error.Description);
             }
-            return View(role);
+            return View("Index", await _roleManager.Roles.ToListAsync());
         }
+
 
         // GET: /Role/Edit/roleId
         [HttpGet("{roleId}")]
@@ -193,7 +184,7 @@ namespace webMVC.Areas.Identity.Controllers
         {
             if (roleId == null) return NotFound("Không tìm thấy role");
             var role = await _roleManager.FindByIdAsync(roleId);
-            if (role == null)
+            if (role == null) 
             {
                 return NotFound("Không tìm thấy role");
             }
@@ -226,7 +217,7 @@ namespace webMVC.Areas.Identity.Controllers
                 return View(model);
             }
 
-            var newClaim = new Claim(model.ClaimType, model.ClaimValue);
+            var newClaim = new Claim(model.ClaimType!, model.ClaimValue!);
             var result = await _roleManager.AddClaimAsync(role, newClaim);
 
             if (!result.Succeeded)
@@ -318,7 +309,7 @@ namespace webMVC.Areas.Identity.Controllers
             }
 
 
-            await _roleManager.RemoveClaimAsync(role, new Claim(claim.ClaimType, claim.ClaimValue));
+            await _roleManager.RemoveClaimAsync(role, new Claim(claim.ClaimType!, claim.ClaimValue!));
 
             StatusMessage = "Vừa xóa claim";
 
@@ -328,4 +319,4 @@ namespace webMVC.Areas.Identity.Controllers
 
 
     }
-}
+} 

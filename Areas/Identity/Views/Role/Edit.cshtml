@@ -18,16 +18,16 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Cập nhật" class="btn btn-primary" />
+            <div class="form-group mt-3">
+                <input type="submit" value="Cập nhật" class="btn btn-primary me-2" />
                 <a class="btn btn-primary" asp-action="Index">Danh sách các role</a>
             </div>
         </form>
         <hr>
         <p>Các đặc tính  (claim) của role:
-            <a asp-action="AddRoleClaim" asp-route-roleId="@Model.role.Id">+ Thêm claim</a>
+            <a asp-action="AddRoleClaim" asp-route-roleId="@Model.role!.Id">+ Thêm claim</a>
         </p>
-        @if (Model.Claims.Count > 0)
+        @if (Model.Claims!.Count > 0)
         {
             <ul>
                 @foreach (var claim in Model.Claims)
@@ -36,8 +36,6 @@
                         <a asp-action="EditRoleClaim" asp-route-claimed="@claim.Id">
                             @claim.ClaimType  : @claim.ClaimValue
                         </a>
-                        
-
                     </li>
                 }
             </ul>

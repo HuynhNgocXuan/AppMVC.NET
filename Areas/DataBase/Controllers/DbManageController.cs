@@ -17,7 +17,7 @@ namespace webMVC.Areas.DataBase.Controllers
         private readonly ILogger _logger;
 
         [TempData]
-        public string statusMessage { get; set; }
+        public string? statusMessage { get; set; }
 
 
         public DbManageController(ILogger<DbManageController> logger, AppDbContext dbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)

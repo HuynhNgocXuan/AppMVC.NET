@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Gán đặc tính cho role";
 }
-<h2>@ViewData["Title"]: @Model.role.Name</h2>
+<h2>@ViewData["Title"]: @Model.role!.Name</h2>
 <partial name="_StatusMessage"></partial>
 
 <hr>
@@ -22,8 +22,8 @@
                 <input asp-for="ClaimValue" class="form-control" />
                 <span asp-validation-for="ClaimValue" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Tạo mới" class="btn btn-primary" />
+            <div class="form-group mt-3">
+                <input type="submit" value="Tạo mới" class="btn btn-primary me-2" />
                 <a class="btn btn-primary" asp-action="Edit" asp-route-roleId="@Model.role.Id">Edit role</a>
             </div>
         </form>

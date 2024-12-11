@@ -1,0 +1,23 @@
+@model RoleModel
+
+<div class="modal fade" id="removeRoleModal-@Model.Id" tabindex="-1" aria-labelledby="removeRoleModalLabel-@Model.Id"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeRoleModalLabel-@Model.Id">Xác nhận Xóa vai trò</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa <strong>@Model.Name</strong> không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form asp-controller="Role" asp-action="Delete" method="post">
+                    <input type="hidden" name="roleId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

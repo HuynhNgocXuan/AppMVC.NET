@@ -3,9 +3,10 @@
     ViewData["Title"] = "Xác nhận số điện thoại";
 }
 
-<h1>@ViewData["Title"].</h1>
+<h2>@ViewData["Title"].</h2>
 
-<form asp-controller="Manage" asp-action="VerifyPhoneNumber" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+<form asp-controller="Manage" asp-action="VerifyPhoneNumber" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post"
+    class="form-horizontal" role="form">
     <input asp-for="PhoneNumber" type="hidden" />
     <h4>Thêm số điện thoại.</h4>
     <h5>@ViewData["Status"]</h5>
@@ -26,5 +27,7 @@
 </form>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

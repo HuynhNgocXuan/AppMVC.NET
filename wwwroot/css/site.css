@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .app-navbar {
   background: rgb(97, 209, 97);
   padding: 16px;
@@ -12,6 +13,9 @@
 }
 .app-navbar .navbar-brand {
   color: #a57dea;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 40px;
 }
 .app-navbar .navbar-brand:hover {
   color: #d727da !important;
@@ -45,6 +49,83 @@
   border-color: #9854a0;
 }
 
+dl.row {
+  margin-bottom: 1rem;
+}
+
+dt.col-sm-4 {
+  font-weight: bold;
+  text-align: right;
+  padding-right: 15px;
+}
+
+dd.col-sm-6 {
+  margin-bottom: 0;
+}
+
+.btn-sm {
+  margin-top: 5px;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+.text-success {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.auth-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  text-align: center;
+}
+
+.auth-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #343a40;
+  margin-bottom: 12px;
+}
+
+.auth-content {
+  width: 100%; /* Đảm bảo các nút chiếm toàn bộ chiều ngang */
+}
+
+.auth-content p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #6c757d; /* Màu xám nhạt hơn cho văn bản */
+}
+
+/* Nút */
+.btn {
+  font-weight: 600;
+  margin-bottom: 8px; /* Khoảng cách giữa các nút */
+}
+
+.btn-sm {
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+/* Đáp ứng */
+@media (max-width: 768px) {
+  .auth-section {
+    margin-bottom: 16px;
+  }
+}
 html {
   position: relative;
   min-height: 100%;

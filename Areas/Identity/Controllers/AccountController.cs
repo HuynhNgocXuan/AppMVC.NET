@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using webMVC.Services;
 
 namespace webMVC.Areas.Identity.Controllers
 {
@@ -56,7 +57,7 @@ namespace webMVC.Areas.Identity.Controllers
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
-            if (User.Identity == null) return View();
+            if (User.Identity == null) return View();  
 
             if (User.Identity.IsAuthenticated)
             {

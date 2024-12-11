@@ -36,7 +36,7 @@ namespace webMVC.Services
       return base.DuplicateUserName(userName);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
       return base.Equals(obj);
     }
@@ -46,12 +46,12 @@ namespace webMVC.Services
       return base.GetHashCode();
     }
 
-    public override IdentityError InvalidEmail(string email)
+    public override IdentityError InvalidEmail(string? email)
     {
       return base.InvalidEmail(email);
     }
 
-    public override IdentityError InvalidRoleName(string role)
+    public override IdentityError InvalidRoleName(string? role)
     {
       return base.InvalidRoleName(role);
     }
@@ -61,7 +61,7 @@ namespace webMVC.Services
       return base.InvalidToken();
     }
 
-    public override IdentityError InvalidUserName(string userName)
+    public override IdentityError InvalidUserName(string? userName)
     {
       return base.InvalidUserName(userName);
     }
@@ -113,7 +113,7 @@ namespace webMVC.Services
 
     public override string ToString()
     {
-      return base.ToString();
+      return base.ToString()!;
     }
 
     public override IdentityError UserAlreadyHasPassword()
