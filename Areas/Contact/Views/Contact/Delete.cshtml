@@ -1,0 +1,50 @@
+@model webMVC.Models.Contact.ContactModel
+
+@{
+    ViewData["Title"] = "Xóa liên hệ";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+    <h3>Bạn chắc chắn có muốn Xóa không?</h3>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateTimeSend)
+            </dt>
+            <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateTimeSend)
+            </dd>
+            <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Message)
+            </dt>
+            <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Message)
+            </dd>
+            <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            <a asp-action="Index">Danh sách liên hệ</a>
+        </form>
+    </div>

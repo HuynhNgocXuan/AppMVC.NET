@@ -1,0 +1,50 @@
+@model EditExtraProfileModel
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+}
+
+<h4>@ViewData["Title"]</h4>
+
+@await Html.PartialAsync("_StatusMessage")
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group my-3">
+                <label asp-for="UserName"></label>
+                <input placeholder="@Html.DisplayNameFor(info => info.UserName)" asp-for="UserName" class="form-control"
+                    disabled />
+            </div>
+            <div class="form-group my-3">
+                <label asp-for="UserEmail"></label>
+                <input placeholder="@Html.DisplayNameFor(info => info.UserEmail)" asp-for="UserEmail"
+                    class="form-control" disabled />
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="PhoneNumber"></label>
+                <input placeholder="@Html.DisplayNameFor(info => info.PhoneNumber)" asp-for="PhoneNumber"
+                    class="form-control" disabled />
+            </div>
+            <div class="form-group my-3">
+                <label asp-for="HomeAddress"></label>
+                <input placeholder="@Html.DisplayNameFor(info => info.HomeAddress)" asp-for="HomeAddress"
+                    class="form-control" />
+                <span asp-validation-for="HomeAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group my-3">
+                <label asp-for="BirthDate"></label>
+                <input type="date" placeholder="@Html.DisplayNameFor(info => info.BirthDate)" asp-for="BirthDate"
+                    class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+
+            <button id="update-profile-button" type="submit" class="btn btn-primary">Lưu dữ liệu</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

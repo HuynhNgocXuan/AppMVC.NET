@@ -1,0 +1,131 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+}
+
+<h2>@ViewData["Title"]</h2>
+<p class="text-success">@ViewData["StatusMessage"]</p>
+<p class="text-success">@TempData["Notify"]</p>
+
+@if (Model.profile != null && Model.Logins != null)
+{
+    <div>
+        <h4 class="mb-4">Cập nhật thông tin tài khoản</h4>
+        
+        <!-- Thông tin cơ bản -->
+        <section>
+            <h5 class="mb-3">Thông tin cơ bản</h5>
+            <dl class="row">
+                <dt class="col-sm-4">Tên đăng nhập:</dt>
+                <dd class="col-sm-6">@Html.DisplayFor(m => Model.profile.UserName)</dd>
+
+                <dt class="col-sm-4">Email:</dt>
+                <dd class="col-sm-6">@Html.DisplayFor(m => Model.profile.UserEmail)</dd>
+
+                <dt class="col-sm-4">Số điện thoại:</dt>
+                <dd class="col-sm-6">
+                    @(Model.PhoneNumber ?? "Không có")
+                    @if (Model.PhoneNumber != null)
+                    {
+                        <a asp-controller="Manage" asp-action="AddPhoneNumber" class="ms-2">Thay đổi</a>
+                        <button type="button" class="btn btn-danger btn-sm ms-2" data-bs-toggle="modal" 
+                                data-bs-target="#removePhoneModal">
+                            Loại bỏ
+                        </button>
+                        @await Html.PartialAsync("_RemovePhoneModal")
+                    }
+                    else
+                    {
+                        <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn btn-primary btn-sm">Thêm</a>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">Địa chỉ:</dt>
+                <dd class="col-sm-6">@Html.DisplayFor(m => Model.profile.HomeAddress)</dd>
+
+                <dt class="col-sm-4">Ngày sinh:</dt>
+                <dd class="col-sm-6">@Html.DisplayFor(m => Model.profile.BirthDate)</dd>
+            </dl>
+            <a asp-action="EditProfile" class="btn btn-primary btn-sm">Chỉnh sửa thông tin</a>
+        </section>
+
+        <!-- Mật khẩu -->
+        <div class="row">
+            <!-- Cột 1: Mật khẩu -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <section class="auth-section">
+                    <h5 class="auth-title">Mật khẩu</h5>
+                    <div class="auth-content">
+                        @if (Model.HasPassword)
+                        {
+                            <a asp-controller="Manage" asp-action="ChangePassword" class="btn btn-primary btn-sm w-100">Đổi mật
+                                khẩu</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Manage" asp-action="SetPassword" class="btn btn-primary btn-sm w-100">Tạo mật
+                                khẩu</a>
+                        }
+                    </div>
+                </section>
+            </div>
+
+            <!-- Cột 2: Xác thực hai yếu tố -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <section class="auth-section">
+                    <h5 class="auth-title">Xác thực hai yếu tố</h5>
+                    <div class="auth-content">
+                        @if (Model.TwoFactor)
+                        {
+                            <p class="text-success mb-3">(Đang kích hoạt)</p>
+                            <form asp-controller="Manage" asp-action="DisableTwoFactorAuthentication" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm w-100">Hủy</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Manage" asp-action="EnableTwoFactorAuthentication" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-primary btn-sm w-100">Kích hoạt</button>
+                            </form>
+                        }
+                    </div>
+                </section>
+            </div>
+
+            <!-- Cột 3: Xác thực ứng dụng -->
+            <div class="col-lg-4 col-md-12 mb-4">
+                <section class="auth-section">
+                    <h5 class="auth-title">Xác thực ứng dụng</h5>
+                    <div class="auth-content">
+                        @if (string.IsNullOrEmpty(Model.AuthenticatorKey))
+                        {
+                            <form asp-controller="Manage" asp-action="ResetAuthenticatorKey" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-primary btn-sm w-100">Phát sinh mã</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-3">Mã xác thực đã được cài đặt.</p>
+                            <form asp-controller="Manage" asp-action="ResetAuthenticatorKey" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm w-100 mb-2">Tái tạo mã</button>
+                            </form>
+                            <form asp-controller="Manage" asp-action="GenerateRecoveryCode" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-primary btn-sm w-100">Phát sinh mã phục hồi</button>
+                            </form>
+                        }
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <p>Không có thông tin người dùng</p>
+}
