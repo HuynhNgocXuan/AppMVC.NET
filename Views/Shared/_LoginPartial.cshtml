@@ -8,20 +8,26 @@
 {
     <form asp-area="Identity" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm"
         class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li class="nav-item">
-                <a class="nav-link" asp-area="Identity" asp-controller="Manage" asp-action="Index" title="Manage">
-                    Xin chào @UserManager.GetUserName(User)!
+        <ul class="nav navbar-nav navbar-right align-items-center">
+            <li class="nav-item position-relative">
+                <img src="https://2sao.vietnamnetjsc.vn//2016/01/27/09/43/hinh-anh-ki-thu-khi-bong-bong-dong-bang-lung-linh-truoc-anh-mat-troi_1.jpg"
+                    alt="Avatar" class="img-avatar-user">
+                <a class="nav-link position-relative user-name" asp-area="Identity" asp-controller="Manage"
+                    asp-action="Index" title="Manage">
+                    @UserManager.GetUserName(User)!
                 </a>
-            </li>
-            <li class="nav-item ms-3"> 
-                <button type="button" class="btn navbar-btn navbar-link btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#logoutModal">
-                    Đăng xuất
-                </button>
+                <!-- Bảng tùy chọn -->
+                <div class="dropdown-menu-custom">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#logoutModal">
+                        Đăng xuất
+                    </button>
+                </div>
             </li>
         </ul>
     </form>
+
+
 
     @await Html.PartialAsync("_LogoutModal")
 }

@@ -1,25 +1,86 @@
 .app-navbar {
-   background: rgb(97, 209, 97);
-   .text-dark {
-      color: black !important;
-      font-size: large;
-      font-weight: 400;
-      &:hover {
+  background: rgb(97, 209, 97);
+  .text-dark {
+    color: black !important;
+    font-size: large;
+    font-weight: 400;
+    &:hover {
       color: white !important;
-      }
-   }
+    }
+  }
   .navbar-brand {
-      color: #a57dea;
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin: 0 40px;
-      &:hover {
+    color: #a57dea;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 40px;
+    &:hover {
       color: #d727da !important;
-      }
+    }
   }
   .dropdown-toggle {
     border-color: #a562ad;
     color: #fff;
   }
   padding: 16px;
+}
+
+.img-avatar-user {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.img-avatar-user:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.user-name {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.user-name:hover {
+  color: #007bff;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dropdown-menu-custom {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -10%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  z-index: 1000;
+  min-width: 100%;
+}
+
+.dropdown-menu-custom button {
+  width: 100%;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.dropdown-menu-custom button:last-child {
+  margin-bottom: 0;
+}
+
+.nav-item:hover .dropdown-menu-custom {
+  display: block;
 }

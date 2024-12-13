@@ -14,7 +14,7 @@ namespace webMVC.Models.Contact {
         [Required(ErrorMessage = "Phải nhập {0} người dùng")]
         [StringLength(100)]
         [Column(TypeName = "nvarchar")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
 
         [DisplayName("Địa chỉ email")]
@@ -22,7 +22,7 @@ namespace webMVC.Models.Contact {
         [Column(TypeName = "nvarchar")]
         [StringLength(50)]
         [EmailAddress(ErrorMessage = "Phải là địa chỉ email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
         
 
         [DisplayName("Ngày gửi")]
@@ -34,12 +34,12 @@ namespace webMVC.Models.Contact {
         [Required(ErrorMessage = "Phải nhập {0}")]
         [DisplayName("Nội dung")]
         [Column(TypeName = "text")]
-        public string Message { get; set; } 
+        public string? Message { get; set; } 
 
         [Required(ErrorMessage = "Phải nhập {0}")]
         [StringLength(50)]
         [Phone(ErrorMessage = "Phải là số diện thoại")]
         [Display(Name = "Số điện thoại")]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
     }
 }
