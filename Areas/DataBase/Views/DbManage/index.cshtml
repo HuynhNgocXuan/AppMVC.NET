@@ -2,7 +2,7 @@
 @inject AppDbContext dbContext
 @using System.Data
 
-<partial name="_MessageNotify"></partial>
+<partial name="_StatusMessage"></partial>
 @{
     ViewData["Title"] = "Cơ sở dữ liệu";
     var connect = dbContext.Database.GetDbConnection();

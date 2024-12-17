@@ -81,21 +81,27 @@
 }
 
 @* PHÁT SINH HTML*@
-
-<ul class="pagination">
+<ul class="pagination d-flex justify-content-center">
     <!-- Previous page link -->
     @if (preview != null)
     {
         <li class="page-item">
-            <a class="page-link" href="@generateUrl!(preview)">Trang trước</a>
+            <!-- Liên kết chuyển đến trang đầu -->
+            <a class="page-link" href="@generateUrl!(1)"><strong>&lt;&lt;</strong></a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="@generateUrl!(preview)"><strong>&lt;</strong></a>
         </li>
     }
     else
     {
         <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Trang trước</a>
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><strong>&lt;&lt;</strong></a>
         </li>
-    } 
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><strong>&lt;</strong></a>
+        </li>
+    }
 
     <!-- Numbered page links -->
     @foreach (var pageItem in pagesRanges)
@@ -116,18 +122,24 @@
         }
     }
 
-
     <!-- Next page link -->
     @if (next != null)
     {
         <li class="page-item">
-            <a class="page-link" href="@generateUrl!(next)">Trang sau</a>
+            <a class="page-link" href="@generateUrl!(next)"><strong>&gt;</strong></a>
+        </li>
+        <li class="page-item">
+            <!-- Liên kết chuyển đến trang cuối -->
+            <a class="page-link" href="@generateUrl!(countPages)"><strong>&gt;&gt;</strong></a>
         </li>
     }
     else
     {
         <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Trang sau</a>
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><strong>&gt;</strong></a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><strong>&gt;&gt;</strong></a>
         </li>
     }
 </ul>

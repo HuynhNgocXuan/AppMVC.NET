@@ -1,0 +1,29 @@
+/* snowfall.css */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  pointer-events: none;
+  z-index: 9999;
+  user-select: none;
+  color: white;
+  animation: fall ease-in-out infinite;
+  opacity: 0.4; 
+}
+
+@keyframes fall {
+  /* to {
+    transform: translateY(100vh) rotate(360deg);
+  } */
+  to {
+    transform: translate(calc(10vw * var(--wind-direction, 1)), 100vh) rotate(720deg);
+  }
+}
+.snowflake:nth-child(odd) {
+  animation-duration: 8s;
+  opacity: 0.2;
+}
+
+.snowflake:nth-child(even) {
+  animation-duration: 12s;
+  opacity: 0.4;
+}

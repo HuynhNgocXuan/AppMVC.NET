@@ -10,14 +10,14 @@ using webMVC.Models.Contact;
 
 namespace webMVC.Areas.Contact.Controllers
 {
-    [Area("Contact")] 
+    [Area("Contact")]
     [Route("Contacts/{action=Index}")]
     public class ContactController : Controller
     {
         private readonly AppDbContext _context;
 
         [TempData]
-        public string? statusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
 
 
@@ -66,13 +66,13 @@ namespace webMVC.Areas.Contact.Controllers
                 contactModel.DateTimeSend = DateTime.Now;
                 _context.Add(contactModel);
                 await _context.SaveChangesAsync();
-                statusMessage = "Gửi thành công";
+                StatusMessage = "Gửi thành công";
                 return RedirectToAction(nameof(Index), "Home");
             }
             return View(contactModel);
         }
 
-       
+
 
 
         // GET: Contact/Delete/5
@@ -102,7 +102,7 @@ namespace webMVC.Areas.Contact.Controllers
             if (contactModel != null)
             {
                 _context.Contacts.Remove(contactModel);
-                statusMessage = "Xóa thành công";
+                StatusMessage = "Xóa thành công";
             }
 
             await _context.SaveChangesAsync();
