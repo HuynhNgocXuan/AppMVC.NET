@@ -56,25 +56,18 @@ namespace webMVC.Areas.Identity.Controllers
             var model = new UserListModel();
             model.currentPage = currentPage;
 
-            var qr = _userManager.Users.OrderBy(u => u.UserName);
+            var usersQuery = _userManager.Users.OrderBy(u => u.UserName).Select(u => new UserAndRole()
+            {
+                Id = u.Id,
+                UserName = u.UserName,
+            });
 
-            model.totalUsers = await qr.CountAsync();
-            model.countPages = (int)Math.Ceiling((double)model.totalUsers / model.ITEMS_PER_PAGE);
+            var paginationResult = await PaginationHelper.PaginateAsync(usersQuery, model.currentPage, model.ITEMS_PER_PAGE);
 
-            if (model.currentPage < 1)
-                model.currentPage = 1;
-            if (model.currentPage > model.countPages)
-                model.currentPage = model.countPages;
-
-            var qr1 = qr.Skip((model.currentPage - 1) * model.ITEMS_PER_PAGE)
-                        .Take(model.ITEMS_PER_PAGE)
-                        .Select(u => new UserAndRole()
-                        {
-                            Id = u.Id,
-                            UserName = u.UserName,
-                        });
-
-            model.users = await qr1.ToListAsync();
+            model.users = paginationResult.items;
+            model.totalUsers = paginationResult.totalItems;
+            model.countPages = paginationResult.countPages;
+            model.currentPage = paginationResult.currentPage;
 
             foreach (var user in model.users)
             {

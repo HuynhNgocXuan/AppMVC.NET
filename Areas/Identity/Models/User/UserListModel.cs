@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using webMVC.Models;
+using webMVC.Models; 
 
 namespace webMVC.Areas.Identity.Models.UserViewModels
-{
+{ 
     public class UserListModel
     {
         public int totalUsers { get; set; }

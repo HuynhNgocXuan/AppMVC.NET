@@ -10,7 +10,7 @@ using webMVC.Models.Blog;
 using Microsoft.AspNetCore.Authorization;
 using webMVC.Data;
 
-namespace AppMvc.Net.Areas.Blog.Controllers
+namespace webMVC.Areas.Blog.Controllers
 {
     [Area("Blog")]
     [Route("Admin/Blog/Category/[action]/{id?}")]
