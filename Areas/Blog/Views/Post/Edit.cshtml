@@ -55,6 +55,14 @@
     <a asp-action="Index">Danh sách bài viết</a>
 </div>
 
+@{
+    var summerNote = new SummerNote("#Content")
+            {
+                Height = 400
+            };
+}
+
+@await Html.PartialAsync("_SummerNotePartial", summerNote)
 
 @section Scripts {
 

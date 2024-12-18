@@ -1,7 +1,7 @@
 @model webMVC.Models.Blog.Category
 
 @{
-    ViewData["Title"] = "Tạo chuyên mục Blog";             
+    ViewData["Title"] = "Tạo chuyên mục Blog";
 }
 
 
@@ -15,11 +15,11 @@
     <div class="col-md-8">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
- 
+
             <div class="form-group">
                 <label asp-for="ParentCategoryId" class="control-label"></label>
-                <select asp-for="ParentCategoryId" class ="form-control" asp-items="ViewBag.ParentCategoryId"></select>
-            </div>            
+                <select asp-for="ParentCategoryId" class="form-control" asp-items="ViewBag.ParentCategoryId"></select>
+            </div>
 
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <textarea  rows="5" asp-for="Description" class="form-control"></textarea>
+                <textarea rows="5" asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -48,3 +48,12 @@
     <a asp-action="Index">Danh sách chuyên mục</a>
 </div>
 
+
+@{
+    var summerNote = new SummerNote("#Description")
+            {
+                Height = 200
+            };
+}
+
+@await Html.PartialAsync("_SummerNotePartial", summerNote)

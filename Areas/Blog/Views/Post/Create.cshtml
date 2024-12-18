@@ -11,7 +11,12 @@
     <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="All" class="text-danger"></div>
-
+            
+            <div class="form-group">
+                <label asp-for="CategoryIDs" class="control-label"></label>
+                <select asp-for="CategoryIDs" multiple="multiple" asp-items="list" class="w-100"></select>
+                <span asp-validation-for="CategoryIDs" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -29,14 +34,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" class="form-control"></textarea>
+                <textarea rows="5" asp-for="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CategoryIDs" class="control-label"></label>
-                <select asp-for="CategoryIDs" multiple="multiple" asp-items="list" class="w-100"></select>
-                <span asp-validation-for="CategoryIDs" class="text-danger"></span>
-            </div>
+
             <div class="form-group form-check my-3">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model =>
@@ -71,3 +72,13 @@
 
     <partial name="_ValidationScriptsPartial" />
 }
+
+
+@{
+    var summerNote = new SummerNote("#Content")
+    {
+        Height = 200
+    };
+}
+
+@await Html.PartialAsync("_SummerNotePartial", summerNote)
