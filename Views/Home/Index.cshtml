@@ -1,4 +1,6 @@
-﻿@{
+﻿@* @using webMVC.Models *@
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -8,3 +10,14 @@
     <h2 class="display-4">Welcome</h2>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<textarea name="" id="summerNoteHome"></textarea>
+
+@{
+    var summerNote = new SummerNote("#summerNoteHome")
+            {
+                Height = 200
+            };
+}
+
+@await Html.PartialAsync("_SummerNotePartial", summerNote)
