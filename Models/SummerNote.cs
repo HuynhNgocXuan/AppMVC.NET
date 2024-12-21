@@ -16,12 +16,13 @@ namespace webMVC.Models
 
         public string Toolbar { get; set; } = @"
             [
+                ['misc', ['undo', 'redo']],
                 ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
+                ['font', ['bold', 'underline', 'clear', 'fontsize', 'fontname', 'superscript', 'subscript']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
-                ['insert', ['link', 'picture', 'video']],
+                ['insert', ['link', 'picture', 'video', 'hr', 'elfinder']],
                 ['height', ['height']],
                 ['view', ['fullscreen', 'codeview', 'help']]
             ]       

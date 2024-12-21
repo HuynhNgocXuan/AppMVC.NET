@@ -13,6 +13,6 @@ namespace webMVC.Areas.Identity.Models.AccountViewModels
     {
         [Required]
         [EmailAddress(ErrorMessage = "Phải là địa chỉ email đã đăng nhập")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
     }
 }

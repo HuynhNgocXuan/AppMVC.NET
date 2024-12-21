@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
     snowflake.style.animationDuration = `${Math.random() * 10 + 5}s`; // Đặt thời gian rơi ngẫu nhiên
     snowflake.style.fontSize = `${Math.random() * 10 + 10}px`;
 
-     snowflake.style.setProperty(
-       "--wind-direction",
-       Math.random() > 0.5 ? "1" : "-1"
-     );
+    snowflake.style.setProperty(
+      "--wind-direction",
+      Math.random() > 0.5 ? "1" : "-1"
+    );
 
     snowContainer.appendChild(snowflake);
 
