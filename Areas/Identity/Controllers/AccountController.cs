@@ -103,7 +103,7 @@ namespace webMVC.Areas.Identity.Controllers
 
             var result = await _signInManager.PasswordSignInAsync(
                 user.UserName,
-                model.Password,
+                model.Password!,
                 model.RememberMe,
                 lockoutOnFailure: true);
 
@@ -164,7 +164,7 @@ namespace webMVC.Areas.Identity.Controllers
             if (ModelState.IsValid)
             {
                 var user = new AppUser { UserName = model.UserName, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password!);
 
                 if (result.Succeeded)
                 {
@@ -190,7 +190,7 @@ namespace webMVC.Areas.Identity.Controllers
 
                     string stringHtml = @$"Bạn đã đăng ký tài khoản trên webMVC, hãy <a href='{HtmlEncoder.Default.Encode(callBackUrl)}'>bấm vào đây</a> để kích hoạt tài khoản.";
                     string stringSubject = "Xác nhận địa chỉ email";
-                    await _emailSender.SendEmailAsync(model.Email, stringSubject, stringHtml);
+                    await _emailSender.SendEmailAsync(model.Email!, stringSubject, stringHtml);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -340,7 +340,7 @@ namespace webMVC.Areas.Identity.Controllers
                 }
 
                 // Tìm người dùng đã đăng ký qua email được cung cấp
-                var registeredUser = await _userManager.FindByEmailAsync(model.Email);
+                var registeredUser = await _userManager.FindByEmailAsync(model.Email!);
 
                 // Trường hợp cả email từ dịch vụ ngoài và email từ người dùng nhập đều tồn tại
                 if (registeredUser != null && externalEmailUser != null)
@@ -454,7 +454,7 @@ namespace webMVC.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email!);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     StatusMessage = "Tài khoản không tồn tại hoặc chưa xác thực email!";
@@ -471,7 +471,7 @@ namespace webMVC.Areas.Identity.Controllers
                 if (callbackUrl == null) return View();
 
                 var stringHtml = $"Hãy bấm <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>vào đây</a> để đặt lại mật khẩu.";
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password", stringHtml);
+                await _emailSender.SendEmailAsync(model.Email!, "Reset Password", stringHtml);
 
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
@@ -507,7 +507,7 @@ namespace webMVC.Areas.Identity.Controllers
             {
                 return View(model);
             }
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email!);
             if (user == null)
             {
                 return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
@@ -516,7 +516,7 @@ namespace webMVC.Areas.Identity.Controllers
             string code;
             try
             {
-                code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code));
+                code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code!));
             }
             catch
             {
@@ -524,7 +524,7 @@ namespace webMVC.Areas.Identity.Controllers
                 return View(model);
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, code, model.Password);
+            var result = await _userManager.ResetPasswordAsync(user, code, model.Password!);
             if (result.Succeeded)
             {
                 return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");

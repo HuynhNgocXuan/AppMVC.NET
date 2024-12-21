@@ -11,8 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace webMVC.Areas.Identity.Controllers
 {
@@ -149,14 +147,14 @@ namespace webMVC.Areas.Identity.Controllers
             var user = await GetCurrentUserAsync();
             if (user != null)
             {
-                var passwordCheck = await _userManager.CheckPasswordAsync(user, model.NewPassword);
+                var passwordCheck = await _userManager.CheckPasswordAsync(user, model.NewPassword!);
                 if (passwordCheck)
                 {
                     ModelState.AddModelError(string.Empty, "Mật khẩu mới không được giống với mật khẩu hiện tại.");
                     return View(model);
                 }
 
-                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword!, model.NewPassword!);
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -272,7 +270,7 @@ namespace webMVC.Areas.Identity.Controllers
             var user = await GetCurrentUserAsync();
             if (user != null)
             {
-                var result = await _userManager.RemoveLoginAsync(user, account.LoginProvider, account.ProviderKey);
+                var result = await _userManager.RemoveLoginAsync(user, account.LoginProvider!, account.ProviderKey!);
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -345,12 +343,12 @@ namespace webMVC.Areas.Identity.Controllers
             var user = await GetCurrentUserAsync();
             if (user == null) return View(model);
 
-            var result = await _userManager.ChangePhoneNumberAsync(user, model.PhoneNumber, model.Code);
+            var result = await _userManager.ChangePhoneNumberAsync(user, model.PhoneNumber!, model.Code!);
 
             if (result.Succeeded)
             {
 
-                var encryptedPhoneNumber = await _encryptionService.Encrypt(model.PhoneNumber);
+                var encryptedPhoneNumber = await _encryptionService.Encrypt(model.PhoneNumber!);
                 user.PhoneNumber = encryptedPhoneNumber;
                 await _userManager.UpdateAsync(user);
 

@@ -13,11 +13,11 @@ namespace webMVC.Areas.Identity.Models.ManageViewModels
     {
         [Required(ErrorMessage = "Phải nhập {0}")]
         [Display(Name = "Mã xác nhận")]
-        public string Code { get; set; } 
+        public string? Code { get; set; } 
 
         [Required(ErrorMessage = "Phải nhập {0}")]
         [Phone]
         [Display(Name = "Số điện thoại")]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 }

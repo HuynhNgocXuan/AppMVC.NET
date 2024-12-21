@@ -8,6 +8,7 @@ using webMVC.Data;
 using webMVC.Services;
 using webMVC.Models;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.FileProviders;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,7 +77,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true; 
+    options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 8;
@@ -128,7 +129,7 @@ builder.Services.AddAuthentication()
     .AddCookie(options =>
     {
 
-        options.SlidingExpiration = false; 
+        options.SlidingExpiration = false;
         options.Cookie.SameSite = SameSiteMode.Strict;
     })
 //  .AddTwitter()
@@ -152,12 +153,12 @@ builder.Services.AddAuthorization(options =>
 {
     AuthorizationPolicyProvider.AddCustomPolicies(options);
 });
- 
+
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = context => true;
-    
+
     options.MinimumSameSitePolicy = SameSiteMode.Lax;
 });
 
@@ -179,6 +180,15 @@ app.AddStatusCodePage();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider
+    (
+        Path.Combine(Directory.GetCurrentDirectory(), "Uploads")
+    ),
+    RequestPath = "/contents"
+});
 
 app.UseRouting();
 
@@ -206,7 +216,7 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-    // .WithStaticAssets();
+// .WithStaticAssets();
 // hoặc app.UseStaticFiles();
 
 app.Run();
