@@ -207,11 +207,11 @@ app.MapRazorPages();
 
 app.MapControllers();
 
-app.MapAreaControllerRoute(
-    name: "areasData",
-    pattern: "{controller=Home}/{action=Index}/{id?}",
-    areaName: "DataBase"
-);
+// app.MapAreaControllerRoute(
+//     name: "areasData",
+//     pattern: "{controller=Home}/{action=Index}/{id?}",
+//     areaName: "DataBase"
+// );
 
 app.MapControllerRoute(
     name: "default",

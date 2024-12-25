@@ -139,7 +139,7 @@ namespace webMVC.Areas.DataBase.Controllers
 
             var fakerCategory = new Faker<Category>();
             int cm = 1;
-            fakerCategory.RuleFor(c => c.Title, fk => $"CM{cm++} " + fk.Lorem.Sentence(1, 2).Trim('.'));
+            fakerCategory.RuleFor(c => c.Title, fk => $"Chuyên mục {cm++} " + fk.Lorem.Sentence(1, 4).Trim('.'));
             fakerCategory.RuleFor(c => c.Description, fk => fk.Lorem.Sentences(5) + "[fakeData]");
             fakerCategory.RuleFor(c => c.Slug, fk => fk.Lorem.Slug());
 

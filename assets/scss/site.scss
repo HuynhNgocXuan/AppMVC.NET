@@ -1,6 +1,9 @@
 @import "menu";
 @import "contact";
 @import "infoAccount";
+@import "footer";
+@import "sideBar";
+@import "post";
 
 html {
   position: relative;
@@ -41,6 +44,3 @@ a {
 .margin {
   margin: 8px 0;
 }
-
-
-

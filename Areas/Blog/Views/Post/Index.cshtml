@@ -44,7 +44,7 @@
                     </a>
                     <br>
                     <small>
-                        @string.Join(", ", item.PostCategories.Select(pc => pc.Category.Title))
+                        @string.Join(", ", item.PostCategories!.Select(pc => pc.Category!.Title))
                     </small>
 
                 </td>
@@ -52,7 +52,7 @@
                     @Html.DisplayFor(modelItem => item.Published)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Author.UserName)
+                    @Html.DisplayFor(modelItem => item.Author!.UserName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateUpdated)
@@ -65,7 +65,6 @@
             </tr>
         }
     </tbody>
-</table> 
+</table>
 
 <partial name="_PagingXTL" model="@ViewBag.pagingModel" />
-@* @await Html.PartialAsync("_PagingXTL", ViewBag.pagingModel) *@
