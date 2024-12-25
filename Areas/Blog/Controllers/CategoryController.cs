@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +20,6 @@ namespace webMVC.Areas.Blog.Controllers
             _context = context;
         }
 
-        
         public async Task<IActionResult> Index()
         {
             var qr = (from c in _context.Categories select c)
@@ -38,7 +33,7 @@ namespace webMVC.Areas.Blog.Controllers
             return View(categories);
         }
 
-        
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -62,7 +57,7 @@ namespace webMVC.Areas.Blog.Controllers
             // string prefix = string.Concat(Enumerable.Repeat("----", level));
             foreach (var category in source)
             {
-                
+
                 des.Add(new Category()
                 {
                     Id = category.Id,
@@ -74,7 +69,7 @@ namespace webMVC.Areas.Blog.Controllers
                 }
             }
         }
-        
+
         public async Task<IActionResult> CreateAsync()
         {
             var qr = (from c in _context.Categories select c)
@@ -132,7 +127,7 @@ namespace webMVC.Areas.Blog.Controllers
             return View(category);
         }
 
-        
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -183,7 +178,7 @@ namespace webMVC.Areas.Blog.Controllers
                 canUpdate = false;
             }
 
-            
+
             if (canUpdate && category.ParentCategoryId != null)
             {
                 var childCates =
@@ -193,7 +188,7 @@ namespace webMVC.Areas.Blog.Controllers
                             .Where(c => c.ParentCategoryId == category.Id);
 
 
-                
+
                 Func<List<Category>, bool>? checkCateIds = null;
                 checkCateIds = (cates) =>
                     {
@@ -212,7 +207,7 @@ namespace webMVC.Areas.Blog.Controllers
                         }
                         return false;
                     };
-                
+
                 checkCateIds(childCates.ToList());
             }
 
@@ -227,7 +222,7 @@ namespace webMVC.Areas.Blog.Controllers
                         category.ParentCategoryId = null;
 
                     var dtc = _context.Categories!.FirstOrDefault(c => c.Id == id);
-                    _context.Entry(dtc).State = EntityState.Detached;
+                    _context.Entry(dtc!).State = EntityState.Detached;
 
                     _context.Update(category);
                     await _context.SaveChangesAsync();
@@ -269,7 +264,7 @@ namespace webMVC.Areas.Blog.Controllers
             return View(category);
         }
 
-        
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -288,7 +283,7 @@ namespace webMVC.Areas.Blog.Controllers
             return View(category);
         }
 
-        
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

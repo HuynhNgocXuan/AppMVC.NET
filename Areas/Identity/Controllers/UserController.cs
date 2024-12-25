@@ -1,25 +1,13 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using webMVC.Areas.Identity.Models.AccountViewModels;
-using webMVC.Areas.Identity.Models.ManageViewModels;
-using webMVC.Areas.Identity.Models.RoleViewModels;
 using webMVC.Areas.Identity.Models.UserViewModels;
 using webMVC.Data;
 using webMVC.ExtendMethods;
 using webMVC.Models;
-using webMVC.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace webMVC.Areas.Identity.Controllers
 {
@@ -166,8 +154,8 @@ namespace webMVC.Areas.Identity.Controllers
                 return NotFound($"Không thấy user, id = {id}.");
             }
 
-            ViewBag.user = user; 
-            ViewBag.currentPage = currentPage; 
+            ViewBag.user = user;
+            ViewBag.currentPage = currentPage;
 
             return View();
         }
@@ -205,7 +193,7 @@ namespace webMVC.Areas.Identity.Controllers
             }
 
             StatusMessage = $"Vừa cập nhật mật khẩu cho user: {user.UserName}";
-            return RedirectToAction("Index", new { p = currentPage }); 
+            return RedirectToAction("Index", new { p = currentPage });
         }
 
         [HttpGet("{userid}")]
@@ -260,8 +248,8 @@ namespace webMVC.Areas.Identity.Controllers
                 ClaimValue = userClaim.ClaimValue
             };
 
-            ViewBag.user = user;  
-            ViewBag.userClaim = userClaim;  
+            ViewBag.user = user;
+            ViewBag.userClaim = userClaim;
             return View("AddClaim", model);
         }
 

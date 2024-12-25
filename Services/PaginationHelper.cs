@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 public class PaginationHelper
 {
-    public static async Task<(List<T> items, int totalItems, int countPages, int currentPage)> PaginateAsync<T>(IQueryable<T> query, int currentPage, int itemsPerPage)
+    const int ITEMS_PER_PAGE = 10;
+    
+    public static async Task<(List<T> items, int totalItems, int countPages, int currentPage)> PaginateAsync<T>(IQueryable<T> query, int currentPage, int itemsPerPage = ITEMS_PER_PAGE)
     {
         int totalItems = await query.CountAsync();
         int countPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
@@ -16,7 +18,7 @@ public class PaginationHelper
             .Skip((currentPage - 1) * itemsPerPage)
             .Take(itemsPerPage)
             .ToListAsync();
-
+ 
         return (items, totalItems, countPages, currentPage);
     }
 }

@@ -43,7 +43,7 @@
     {
         currentPage = Model.currentPage,
         countPages = Model.countPages,
-        generateUrl = (int? p) => Url.Action("Index", new { p = p })
+        generateUrl = (int? p) => Url.Action("Index", new { p = p }) ?? string.Empty
     };
 }
  

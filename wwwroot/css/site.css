@@ -71,11 +71,10 @@
 }
 
 .contact-firstcol {
-  background-color: #9854a0;
-  color: rgb(208, 87, 87);
+  background-color: rgb(216, 216, 248);
+  color: red;
   text-align: center;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  border-radius: 15px;
 }
 .contact-firstcol h4 {
   line-height: 40px;
@@ -90,8 +89,8 @@
   font-weight: 700;
 }
 .formcontact .btn-primary {
-  background-color: #9854a0 !important;
-  border-color: #9854a0;
+  background-color: rgb(216, 216, 248) !important;
+  border-color: rgb(216, 216, 248);
 }
 
 dl.row {
@@ -164,6 +163,70 @@ section {
     margin-bottom: 16px;
   }
 }
+.app-footer {
+  background: rgb(97, 209, 97);
+}
+
+.categorySidebar ul,
+.categorySidebar li {
+  list-style: none;
+  padding-left: 10px;
+}
+.categorySidebar a {
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 1.8rem;
+  padding: 2px 8px;
+  margin: 4px 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.categorySidebar a:hover {
+  color: red;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+}
+.categorySidebar a.active {
+  color: red;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.categorySidebar h3 {
+  text-transform: uppercase;
+  font-size: 1.3em;
+  border-bottom: 1px solid blue;
+  padding-bottom: 10px;
+}
+
+.detailPost h1 {
+  font-weight: 600;
+}
+.detailPost .short-description {
+  font-style: italic;
+}
+.detailPost img {
+  max-width: 100%;
+}
+
+.post-item {
+  display: flex;
+}
+.post-item .img-thumbnail {
+  height: 80px;
+  width: auto;
+  object-fit: cover;
+  margin-right: 24px;
+  border: 4px solid rgb(97, 209, 97);
+  border-radius: 4px;
+}
+.post-item .post-title:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
 html {
   position: relative;
   min-height: 100%;

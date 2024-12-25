@@ -9,7 +9,7 @@ namespace webMVC.Areas.Identity.Models.UserViewModels
         
         public int countPages { get; set; }
  
-        public int ITEMS_PER_PAGE { get; set; } = 1;
+        public int ITEMS_PER_PAGE { get; set; } = 10;
 
         public int currentPage { get; set; }
 
