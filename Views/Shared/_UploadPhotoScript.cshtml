@@ -1,0 +1,112 @@
+<script>
+    // Sửa: Hàm upload nhiều file
+    function AutoUploadPhotos() {
+        var formData = new FormData();
+
+        var productId = $("#box-photo-upload").data("id");
+        formData.append("id", productId);
+
+        // Sửa: Vòng lặp thêm tất cả các file vào FormData
+        var files = document.getElementById("selectFilesUpload").files;
+        if (files.length === 0) return;
+
+        for (var i = 0; i < files.length; i++) {
+            formData.append("FilesUpload", files[i]); // Sửa: Thêm tất cả file
+        }
+
+        var urlUpload = "@Url.Action("UploadPhotosApi")";
+
+        $.ajax({
+            data: formData,
+            cache: false,
+            url: urlUpload,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            success: function () {
+                LoadPhotos(); // Sửa: Load lại danh sách ảnh sau khi upload
+            },
+            error: function () {
+                alert("Failed to upload files.");
+            }
+        });
+    }
+
+    // Hàm nhấn nút chọn file
+    function ClickButtonUpload() {
+        $("#selectFilesUpload").click();
+    }
+
+    // Sửa: Hàm xóa ảnh
+    function setClickDeletePhoto() {
+        $("#box-photo-upload .photo-detail span").click(function () {
+            if (!confirm("Bạn có chắc chắn muốn xóa ảnh này?")) return;
+
+            var spanButton = $(this);
+            var photoId = spanButton.data("id");
+
+            var formData = new FormData();
+            formData.append("id", photoId);
+
+            var urlDeletePhoto = "@Url.Action("DeletePhoto")";
+
+            $.ajax({
+                data: formData,
+                cache: false,
+                url: urlDeletePhoto,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                success: function () {
+                    LoadPhotos(); // Sửa: Load lại danh sách ảnh sau khi xóa
+                },
+                error: function () {
+                    alert("Failed to delete the photo.");
+                }
+            });
+        });
+    }
+
+    // Sửa: Hàm tải danh sách ảnh
+    function LoadPhotos() {
+        var box = $("#box-photo-upload");
+        var productId = box.data("id");
+        box.empty();
+
+        var formData = new FormData();
+        formData.append("id", productId);
+
+        var urlListPhoto = "@Url.Action("ListPhotos")";
+
+        $.ajax({
+            data: formData,
+            cache: false,
+            url: urlListPhoto,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                // Sửa: Tạo danh sách ảnh và thêm vào giao diện
+                data.photos.forEach(function (item) {
+                    var element = $(
+                        '<div class="photo-detail me-2 shadow-sm">'
+                        + '<img class="w-100 rounded-top" src="' + item.path + '" />'
+                        + '<div class="overlay d-flex justify-content-center align-items-center">'
+                        + '<span class="btn btn-danger delete-btn" data-id="' + item.id + '">Delete</span>'
+                        + '</div></div>'
+                    );
+                    box.append(element);
+                });
+                setClickDeletePhoto(); // Gắn sự kiện xóa sau khi tải xong
+            },
+            error: function () {
+                alert("Failed to load photos.");
+            }
+        });
+    }
+
+    // Sửa: Gọi hàm load danh sách ảnh khi trang được tải
+    $(document).ready(function () {
+        LoadPhotos();
+    });
+</script>

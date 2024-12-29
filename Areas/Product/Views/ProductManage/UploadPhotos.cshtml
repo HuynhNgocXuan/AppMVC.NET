@@ -1,0 +1,24 @@
+@model webMVC.Areas.Product.Controllers.ProductManageController.UploadMultipleFiles
+
+@{
+    ViewData["Title"] = "Upload Photos";
+    ProductModel? product = ViewData["product"] as ProductModel;
+}
+
+<h2 class="d-flex p-3 ps-0">
+    @ViewData["Title"]: &nbsp;
+    <p class="text-info ">
+        @product!.Title
+    </p>
+</h2>
+<hr />
+
+<input class="collapse" type="file" multiple id="selectFilesUpload" onchange="AutoUploadPhotos()" />
+<span class="btn btn-primary mb-3" onclick="ClickButtonUpload()">Upload Photos</span>
+<div id="box-photo-upload" class="d-flex flex-wrap photo-upload" data-id="@product.ProductID"></div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_UploadPhotoScript");
+    }
+}

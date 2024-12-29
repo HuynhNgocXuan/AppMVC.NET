@@ -5,18 +5,18 @@
     var list = ViewData["categories"] as MultiSelectList;
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 <hr />
 <div class="row">
     <div class="col-md-12">
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
-             <input type="hidden" asp-for="PostId" />
-             <div class="form-group">
+            <input type="hidden" asp-for="PostId" />
+            <div class="form-group">
                 <label asp-for="CategoryIDs" class="control-label"></label>
                 <select asp-for="CategoryIDs" multiple="multiple" asp-items="list" class="w-100"></select>
                 <span asp-validation-for="CategoryIDs" class="text-danger"></span>
-            </div>        
+            </div>
 
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -40,11 +40,12 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                    <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model =>
+                    model.Published)
                 </label>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <input type="submit" value="Cập nhật" class="btn btn-primary" />
             </div>
         </form>

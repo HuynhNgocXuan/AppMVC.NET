@@ -34,7 +34,7 @@ builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 
 
 builder.Services.AddScoped<IQRCodeService, QRCodeService>();
-
+builder.Services.AddTransient<CartService>();
 
 var mailSetting = builder.Configuration.GetSection("MailSettings");
 builder.Services.Configure<MailSettings>(mailSetting);
@@ -64,7 +64,7 @@ builder.Services.Configure<RazorViewEngineOptions>(option =>
     option.AreaViewLocationFormats.Add("/MyAreas/{2}/Views/{1}/{0}.cshtml");
 });
 
-builder.Services.AddSingleton<ProductService>();
+// builder.Services.AddSingleton<ProductService>();
 
 builder.Services.AddSingleton<PlanetService>();
 

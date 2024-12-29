@@ -4,16 +4,16 @@
     ViewData["Title"] = "Xóa chuyên mục";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 
 <h3>Có chắc chắn xóa?</h3>
 <div>
 
     <dl class="row">
-        <dt class = "col-sm-4">
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-8">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Title)
         </dd>
     </dl>

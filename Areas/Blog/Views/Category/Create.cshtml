@@ -7,12 +7,12 @@
 
 
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 
 <h4>Category</h4>
 <hr />
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -37,7 +37,7 @@
                 <span asp-validation-for="Slug" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <input type="submit" value="Tạo mới" class="btn btn-primary" />
             </div>
         </form>

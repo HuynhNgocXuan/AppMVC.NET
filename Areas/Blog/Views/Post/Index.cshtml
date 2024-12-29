@@ -4,7 +4,7 @@
     ViewData["Title"] = "Danh sách BLog";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 
 <partial name="_StatusMessage" />
 
@@ -59,8 +59,8 @@
                 </td>
                 <td>
 
-                    <a asp-action="Details" asp-route-id="@item.PostId">Chi tiết</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PostId">Xóa</a>
+                    <a class="btn btn-primary me-2" asp-action="Details" asp-route-id="@item.PostId">Chi tiết</a>
+                    <a class="btn btn-danger me-2" asp-action="Delete" asp-route-id="@item.PostId">Xóa</a>
                 </td>
             </tr>
         }

@@ -5,13 +5,13 @@
     var list = ViewData["categories"] as MultiSelectList;
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 <hr />
 <div class="row">
     <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="All" class="text-danger"></div>
-            
+
             <div class="form-group">
                 <label asp-for="CategoryIDs" class="control-label"></label>
                 <select asp-for="CategoryIDs" multiple="multiple" asp-items="list" class="w-100"></select>
@@ -45,7 +45,7 @@
                 </label>
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <input type="submit" value="Tạo bài viết" class="btn btn-primary" />
             </div>
         </form>
@@ -76,9 +76,9 @@
 
 @{
     var summerNote = new SummerNote("#Content")
-    {
-        Height = 200
-    };
+            {
+                Height = 200
+            };
 }
 
 @await Html.PartialAsync("_SummerNotePartial", summerNote)
