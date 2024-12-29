@@ -1,0 +1,36 @@
+@inject SignInManager<AppUser> SignInManager
+
+
+<div class="col-md-4">
+    <section>
+        <h4>Đăng nhập bằng tài khoản.</h4>
+        <hr />
+    @{
+        var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+        var loginProviders = schemes.ToList();
+        if (loginProviders.Count == 0)
+        {
+            <div>
+                <p>
+                    Ứng dụng chưa hỗ trợ đăng nhập từ tài khoản ngoài
+                </p>
+            </div>
+        }
+        else
+        {
+            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]"
+                method="post" class="form-horizontal" role="form">
+                <div>
+                    <p>
+            @foreach (var provider in loginProviders)
+            {
+                <button type="submit" class="btn btn-primary me-2" name="provider" value="@provider.Name"
+                    title="Log in using your @provider.Name account">@provider.Name</button>
+            }
+                    </p>
+                </div>
+            </form>
+        }
+    }
+    </section>
+</div>

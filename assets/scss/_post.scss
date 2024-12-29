@@ -1,0 +1,31 @@
+.detailPost {
+  h1 {
+    font-weight: 600;
+  }
+  .short-description {
+    font-style: italic;
+  }
+  img {
+    max-width: 100%;
+  }
+}
+
+.post-item {
+  display: flex;
+
+  .img-thumbnail {
+    height: 80px;
+    width: auto;
+    object-fit: cover;
+    margin-right: 24px;
+    border: 4px solid rgb(97, 209, 97);
+    border-radius: 4px;
+  }
+
+  .post-title {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+    }
+  }
+}

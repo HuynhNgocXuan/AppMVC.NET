@@ -1,15 +1,230 @@
-html {
-  font-size: 14px;
+.app-navbar {
+  background: rgb(97, 209, 97);
+  padding: 16px;
+}
+.app-navbar .text-dark {
+  color: black !important;
+  font-size: large;
+  font-weight: 400;
+}
+.app-navbar .text-dark:hover {
+  color: white !important;
+}
+.app-navbar .navbar-brand {
+  color: #a57dea;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 40px;
+}
+.app-navbar .navbar-brand:hover {
+  color: #d727da !important;
+}
+.app-navbar .dropdown-toggle {
+  border-color: #a562ad;
+  color: #fff;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+.img-avatar-user {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+}
+
+.dropdown-menu-custom {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 5%;
+  background-color: #fff;
+  padding: 5px 0;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  white-space: nowrap;
+  width: auto;
+  min-width: 100px;
+}
+
+.nav-item:hover .dropdown-menu-custom {
+  display: block;
+}
+
+.dropdown-menu-custom p {
+  margin-bottom: 0;
+  padding: 4px 26px;
+  word-wrap: break-word;
+  cursor: pointer;
+  margin: 8px 0;
+  font-weight: 600;
+}
+
+.dropdown-menu-custom p:hover {
+  color: #ff0000;
+  background-color: rgb(230, 221, 221);
+}
+
+.contact-firstcol {
+  background-color: rgb(216, 216, 248);
+  color: red;
+  text-align: center;
+  border-radius: 15px;
+}
+.contact-firstcol h4 {
+  line-height: 40px;
+  font-weight: 400;
+  margin-top: 20px;
+}
+.contact-firstcol img {
+  max-width: 100px;
+}
+
+.formcontact label {
+  font-weight: 700;
+}
+.formcontact .btn-primary {
+  background-color: rgb(216, 216, 248) !important;
+  border-color: rgb(216, 216, 248);
+}
+
+dl.row {
+  margin-bottom: 1rem;
+}
+
+dt.col-sm-4 {
+  font-weight: bold;
+  text-align: right;
+  padding-right: 15px;
+}
+
+dd.col-sm-6 {
+  margin-bottom: 0;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+.text-success {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.auth-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  text-align: center;
+}
+
+.auth-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #343a40;
+  margin-bottom: 12px;
+}
+
+.auth-content {
+  width: 100%;
+}
+
+.auth-content p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.btn {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.btn-sm {
+  font-size: 14px;
+  padding: 8px 12px;
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .auth-section {
+    margin-bottom: 16px;
   }
 }
+.app-footer {
+  background: rgb(97, 209, 97);
+}
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.categorySidebar ul,
+.categorySidebar li {
+  list-style: none;
+  padding-left: 10px;
+}
+.categorySidebar a {
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 1.8rem;
+  padding: 2px 8px;
+  margin: 4px 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.categorySidebar a:hover {
+  color: red;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+}
+.categorySidebar a.active {
+  color: red;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.categorySidebar h3 {
+  text-transform: uppercase;
+  font-size: 1.3em;
+  border-bottom: 1px solid blue;
+  padding-bottom: 10px;
+}
+
+.detailPost h1 {
+  font-weight: 600;
+}
+.detailPost .short-description {
+  font-style: italic;
+}
+.detailPost img {
+  max-width: 100%;
+}
+
+.post-item {
+  display: flex;
+}
+.post-item .img-thumbnail {
+  height: 80px;
+  width: auto;
+  object-fit: cover;
+  margin-right: 24px;
+  border: 4px solid rgb(97, 209, 97);
+  border-radius: 4px;
+}
+.post-item .post-title:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }
 
 html {
@@ -19,4 +234,34 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: rgb(244, 242, 242);
+  color: #1d1d1f;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+.control-label {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.btn-cancel {
+  background-color: rgb(168, 166, 166);
+}
+.btn-cancel :hover {
+  background-color: gray;
+}
+
+a {
+  text-decoration: none;
+}
+
+.margin {
+  margin: 8px 0;
 }

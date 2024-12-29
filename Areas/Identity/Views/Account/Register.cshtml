@@ -1,0 +1,60 @@
+﻿@inject SignInManager<AppUser> SignInManager
+
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng ký tài khoản";
+}
+
+<h2>@ViewData["Title"].</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <section>
+            <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]"
+                method="post" class="form-horizontal" role="form">
+                @Html.AntiForgeryToken()
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mt-4">
+                    <div class="col-md-10">
+                        <input placeholder="@Html.DisplayNameFor(u => u.UserName)" asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-md-10">
+                        <input placeholder="@Html.DisplayNameFor(u => u.Email)" asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-md-10">
+                        <input placeholder="@Html.DisplayNameFor(u => u.Password)" asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-md-10">
+                        <input placeholder="@Html.DisplayNameFor(u => u.ConfirmPassword)" asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-primary">Đăng ký</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    @await Html.PartialAsync("_ExternalLoginPartial")
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
