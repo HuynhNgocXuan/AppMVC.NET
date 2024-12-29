@@ -1,22 +1,30 @@
-using webMVC.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using webMVC.Models.Contact;
 using webMVC.Models.Blog;
- 
+using webMVC.Models.Product;
+
 namespace webMVC.Models
 {
     // webMVC.Models.AppDbContext
     public class AppDbContext : IdentityDbContext<AppUser>
     {
         public DbSet<ContactModel>? Contacts { get; set; }
+
+        
         public DbSet<Category>? Categories { get; set; }
         public DbSet<Post>? Posts { get; set; }
         public DbSet<PostCategory>? PostCategories { get; set; }
+
         
+        public DbSet<CategoryProduct>? CategoryProducts { get; set; }
+        public DbSet<ProductModel>? Products { get; set; }
+        public DbSet<CategoryAndProduct>? CategoryAndProducts { get; set; }
+        public DbSet<ProductPhoto>? ProductPhotos { get; set; }
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        { 
+        {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
@@ -53,7 +61,24 @@ namespace webMVC.Models
             {
                 entity.HasIndex(p => p.Slug)
                       .IsUnique();
-            }); ;
+            });
+
+            modelBuilder.Entity<CategoryProduct>(entity =>
+            {
+                entity.HasIndex(c => c.Slug)
+                      .IsUnique();
+            });
+
+            modelBuilder.Entity<CategoryAndProduct>(entity =>
+            {
+                entity.HasKey(c => new { c.ProductID, c.CategoryID });
+            });
+
+            modelBuilder.Entity<ProductModel>(entity =>
+            {
+                entity.HasIndex(p => p.Slug)
+                      .IsUnique();
+            });
         }
     }
 }

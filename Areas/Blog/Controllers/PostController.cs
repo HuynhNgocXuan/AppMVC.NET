@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using webMVC.Utilities;
 using webMVC.Areas.Blog.Models;
 
-namespace AppMvc.Areas.Blog.Controllers
+namespace webMVC.Areas.Blog.Controllers
 {
     [Area("Blog")]
     [Route("admin/blog/post/[action]/{id?}")]
@@ -167,7 +167,7 @@ namespace AppMvc.Areas.Blog.Controllers
                 Description = post.Description,
                 Slug = post.Slug,
                 Published = post.Published,
-                CategoryIDs  =  post.PostCategories.Select(pc => pc.CategoryID).ToArray()
+                CategoryIDs  =  post.PostCategories!.Select(pc => pc.CategoryID).ToArray()
             };
 
             var categories = await _context.Categories!.ToListAsync();
@@ -179,7 +179,7 @@ namespace AppMvc.Areas.Blog.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,Description,Slug,Content,Published,CategoryIDs")] CreatePostModel post)
-        {
+        { 
             if (id != post.PostId)
             {
                 return NotFound();

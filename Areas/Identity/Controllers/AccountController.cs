@@ -64,7 +64,7 @@ namespace webMVC.Areas.Identity.Controllers
         // POST: /Account/Login
         [HttpPost("/login/")]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] 
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");

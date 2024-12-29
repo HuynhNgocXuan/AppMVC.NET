@@ -44,8 +44,8 @@
                     @Html.DisplayFor(modelItem => item.DateTimeSend)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                    <a class="btn btn-primary me-2" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> 
+                    <a class="btn btn-danger me-2" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
                 </td>
             </tr>
         }

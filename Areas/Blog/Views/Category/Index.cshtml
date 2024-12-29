@@ -4,7 +4,7 @@
     ViewData["Title"] = "Chuyên mục Blog";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 
 <p>
     <a asp-action="Create" class="btn btn-primary btn-sm">Tạo chuyên mục</a>
@@ -38,7 +38,7 @@
         string prefix = string.Concat(Enumerable.Repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", level));
         <tr>
             <td>
-                
+
                 <a asp-action="Edit" asp-route-id="@item.Id">
                     (@level) @Html.DisplayFor(modelItem => item.Title)
                 </a>
@@ -47,8 +47,8 @@
                 @Html.DisplayFor(modelItem => item.Slug)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                <a class="btn btn-primary me-2" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a>
+                <a class="btn btn-danger me-2" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
             </td>
         </tr>
         if (item.CategoryChildren?.Count > 0)
