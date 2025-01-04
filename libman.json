@@ -15,8 +15,16 @@
       "destination": "wwwroot/lib/jqueryui"
     },
     {
-      "library": "elfinder@2.1.65", 
+      "library": "elfinder@2.1.65",
       "destination": "wwwroot/lib/elfinder"
+    },
+    {
+      "library": "jquery-easing@1.4.1",
+      "destination": "wwwroot/lib/jquery-easing"
+    },
+    {
+      "library": "font-awesome@5.15.3",
+      "destination": "wwwroot/lib/font-awesome"
     }
   ]
 }

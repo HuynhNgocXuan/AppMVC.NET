@@ -23,7 +23,7 @@ namespace AppMvc.Net.Areas.Product.Controllers
 
         // /post/
         // /post/{categorySlug?}
-        [Route("/product/{categorySlug?}")]
+        [Route("/products/{categorySlug?}")]
         public IActionResult Index(string categorySlug, [FromQuery(Name = "p")] int currentPage, int pagesize)
         {
             var categories = GetCategories();
@@ -83,7 +83,7 @@ namespace AppMvc.Net.Areas.Product.Controllers
                     pagesize = pagesize
                 }) ?? string.Empty
             };
- 
+
             var productsInPage = products.Skip((currentPage - 1) * pagesize)
                              .Take(pagesize);
 
@@ -107,7 +107,7 @@ namespace AppMvc.Net.Areas.Product.Controllers
                                .Include(p => p.Author)
                                .Include(p => p.Photos)
                                .Include(p => p.CategoryAndProducts)!
-                               .ThenInclude(pc => pc.Category)
+                               .ThenInclude(pc => pc.Category) // Ghi chu . cham de coi Category hay la ProductCategory 
                                .FirstOrDefault();
 
             if (product == null)
@@ -137,8 +137,13 @@ namespace AppMvc.Net.Areas.Product.Controllers
             return categories;
         }
 
+        [Route("/cart", Name = "cart")]
+        public IActionResult Cart()
+        {
+            return View(_cartService.GetCartItems());
+        }
 
-        /// Thêm sản phẩm vào cart
+
         [Route("add-cart/{productId:int}", Name = "add-cart")]
         public IActionResult AddToCart([FromRoute] int productId)
         {
@@ -149,41 +154,36 @@ namespace AppMvc.Net.Areas.Product.Controllers
             if (product == null)
                 return NotFound("Không có sản phẩm");
 
-            // Xử lý đưa vào Cart ...
+
             var cart = _cartService.GetCartItems();
             var cartItem = cart.Find(p => p.product.ProductID == productId);
             if (cartItem != null)
             {
-                // Đã tồn tại, tăng thêm 1
                 cartItem.quantity++;
             }
             else
             {
-                //  Thêm mới
                 cart.Add(new CartItem() { quantity = 1, product = product });
             }
 
-            // Lưu cart vào Session
+
             _cartService.SaveCartSession(cart);
-            // Chuyển đến trang hiện thị Cart
+
             return RedirectToAction(nameof(Cart));
         }
-        // Hiện thị giỏ hàng
-        [Route("/cart", Name = "cart")]
-        public IActionResult Cart()
-        {
-            return View(_cartService.GetCartItems());
-        }
 
-        /// xóa item trong cart
-        [Route("/remove-cart/{productId:int}", Name = "remove-cart")]
+
+
+
+
+        [Route("/remove-cart/{productId:int}", Name = "removeCart")]
         public IActionResult RemoveCart([FromRoute] int productId)
         {
             var cart = _cartService.GetCartItems();
             var cartItem = cart.Find(p => p.product.ProductID == productId);
             if (cartItem != null)
             {
-                // Đã tồn tại, tăng thêm 1
+
                 cart.Remove(cartItem);
             }
 
@@ -191,21 +191,21 @@ namespace AppMvc.Net.Areas.Product.Controllers
             return RedirectToAction(nameof(Cart));
         }
 
-        /// Cập nhật
-        [Route("/update-cart", Name = "update-cart")]
+
+        [Route("/update-cart", Name = "updateCart")]
         [HttpPost]
         public IActionResult UpdateCart([FromForm] int productId, [FromForm] int quantity)
         {
-            // Cập nhật Cart thay đổi số lượng quantity ...
+
             var cart = _cartService.GetCartItems();
             var cartItem = cart.Find(p => p.product.ProductID == productId);
             if (cartItem != null)
             {
-                // Đã tồn tại, tăng thêm 1
+
                 cartItem.quantity = quantity;
             }
             _cartService.SaveCartSession(cart);
-            // Trả về mã thành công (không có nội dung gì - chỉ để Ajax gọi)
+
             return Ok();
         }
 
@@ -214,7 +214,7 @@ namespace AppMvc.Net.Areas.Product.Controllers
         {
             var cart = _cartService.GetCartItems();
 
-            // ....
+
             _cartService.ClearCart();
 
             return Content("Da gui don hang");

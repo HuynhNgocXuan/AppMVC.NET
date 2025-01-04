@@ -27,14 +27,6 @@
 
 
 <h2>@ViewData["Title"]</h2>
-@if (category != null)
-{
-    <p>@category.Description</p>
-}
-else
-{
-    <p>Bài viết trong tất cả các danh mục ...</p>
-}
 <hr>
 
 @foreach (var post in Model)

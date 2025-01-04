@@ -1,36 +1,48 @@
 @inject SignInManager<AppUser> SignInManager
 
-
-<div class="col-md-4">
-    <section>
-        <h4>Đăng nhập bằng tài khoản.</h4>
-        <hr />
-    @{
-        var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
-        var loginProviders = schemes.ToList();
-        if (loginProviders.Count == 0)
-        {
+@{
+    var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+    var loginProviders = schemes.ToList();
+    if (loginProviders.Count == 0)
+    {
+    }
+    else
+    {
+        <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post"
+            class="form-horizontal user" role="form">
             <div>
                 <p>
-                    Ứng dụng chưa hỗ trợ đăng nhập từ tài khoản ngoài
+                    @foreach (var provider in loginProviders)
+                    {
+                        var cssClass = "";
+                        var icon = "";
+
+                        var providerStyles = new Dictionary<string, (string CssClass, string Icon)>
+            {
+            { "Google", ("google", "<i class=\"fab fa-google fa-fw\"></i>") },
+            { "Facebook", ("facebook", "<i class=\"fab fa-facebook-f fa-fw\"></i>") },
+            { "Twitter", ("twitter", "<i class=\"fab fa-twitter fa-fw\"></i>") },
+            { "Microsoft", ("microsoft", "<i class=\"fab fa-microsoft fa-fw\"></i>") }
+            };
+
+                        if (providerStyles.TryGetValue(provider.Name, out var style))
+                        {
+                            cssClass = style.CssClass;
+                            icon = style.Icon;
+                        }
+                        else
+                        {
+                            cssClass = "btn btn-default btn-user btn-block";
+                            icon = "<i class=\"fas fa-user fa-fw\"></i>";
+                        }
+
+                        <button type="submit" class="btn btn-@cssClass btn-user btn-block" name="provider" value="@provider.Name"
+                            title="Log in using your @provider.Name account">
+                            @Html.Raw(icon) @provider.Name
+                        </button>
+                    }
                 </p>
             </div>
-        }
-        else
-        {
-            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]"
-                method="post" class="form-horizontal" role="form">
-                <div>
-                    <p>
-            @foreach (var provider in loginProviders)
-            {
-                <button type="submit" class="btn btn-primary me-2" name="provider" value="@provider.Name"
-                    title="Log in using your @provider.Name account">@provider.Name</button>
-            }
-                    </p>
-                </div>
-            </form>
-        }
+        </form>
     }
-    </section>
-</div>
+}

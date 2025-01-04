@@ -10,7 +10,6 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="~/">Home</a></li>
     @if  (category != null)
     {
         var li = category.ListParents();
@@ -27,14 +26,6 @@
 
 
 <h2>@ViewData["Title"]</h2>
-@if (category != null)
-{
-    <p>@category.Description</p>
-}
-else
-{
-    <p>Toàn bộ sản phẩm trong tất cả danh mục...</p>
-}
 <hr>
 
 <div class="d-flex flex-wrap justify-content-between">
@@ -46,25 +37,19 @@ else
             srcImg = $"/contents/Products/{product.Photos!.FirstOrDefault()!.FileName}";
         }
 
-        <div class="product-card" >
-            <img src="@srcImg" class="card-img-top product-image" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">@product.Title</h5>
-                <p class="card-text">
-                    @product.Description
-                </p>
-                <p>
-                    <strong class="text-danger">@product.CategoryAndProducts!.FirstOrDefault()?.Category!.Title</strong>
-                </p>
-                <p>Giá: <strong>@product.Price</strong></p>
-                
-            </div>
-            <div class="card-body">
-                <a class="card-link" asp-controller="ViewProduct" asp-action="Detail" asp-route-productSlug="@product.Slug">
-                    Chi tiết
-                </a>
-                <a asp-action="AddToCart" asp-route-productId="@product.ProductID" class="btn btn-primary ml-4">Đặt hàng</a>
-            </div>
+        <div class="product-card">
+            <a asp-controller="ViewProduct" asp-action="Detail" asp-route-productSlug="@product.Slug">
+                <img src="@srcImg" class="card-img-top product-image" alt="...">
+                <div class="card-body pb-0">
+                    <h5 class="card-title product-title">@product.Title</h5>
+                    <text>Giá: <strong>@product.Price</strong></text>
+                </div>
+                <div class="card-body pt-0">
+                    <small>Vị trí đang bán ở đâu</small>
+                    <small>Đã bán: 5K</small>
+                    <small>5*</small>
+                </div>
+            </a>
         </div>
     }
 </div>
