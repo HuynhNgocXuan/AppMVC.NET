@@ -136,9 +136,10 @@ builder.Services.AddAuthentication()
 //  .AddMicrosoftAccount()
 ;
 
-
+builder.Services.AddDistributedMemoryCache();      
 builder.Services.AddSession(options =>
 {
+    options.Cookie.Name = "app-mvc";
     options.IdleTimeout = TimeSpan.FromHours(24);
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Lax;

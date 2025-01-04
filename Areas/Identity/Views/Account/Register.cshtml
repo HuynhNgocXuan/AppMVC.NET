@@ -3,54 +3,71 @@
 @model RegisterViewModel
 @{
     ViewData["Title"] = "Đăng ký tài khoản";
+    Layout = "_LoginLayout.cshtml";
 }
+<style>
+    .bg-register-image {
+        background-image: url(/contents/logo.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-color: black;
+    }
+</style>
 
-<h2>@ViewData["Title"].</h2>
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+            <div class="col-lg-7">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Tạo tài khoản mới</h1>
+                    </div>
+                    <form asp-controller="Account" asp-action="Register" asp-route-returnUrl="@ViewData["ReturnUrl"]"
+                        method="post" class="user">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<div class="row">
-    <div class="col-md-8">
-        <section>
-            <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]"
-                method="post" class="form-horizontal" role="form">
-                @Html.AntiForgeryToken()
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group mt-4">
-                    <div class="col-md-10">
-                        <input placeholder="@Html.DisplayNameFor(u => u.UserName)" asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
+                        <div class="form-group">
+                            <input asp-for="UserName" class="form-control form-control-user" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="Email" class="form-control form-control-user" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <input asp-for="Password" class="form-control form-control-user">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <input asp-for="ConfirmPassword" class="form-control form-control-user">
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-user btn-block">Đăng ký</button>
+                        <hr>
+                    </form>
+                    <hr>
+
+                    @await Html.PartialAsync("_ExternalLoginPartial")
+
+                    <div class="text-center">
+                        <a class="small" asp-action="ForgotPassword">Quyên mật khẩu?</a>
+                    </div>
+                    <div class="text-center">
+                        <a class="small" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]">Đã có tài
+                            khoản? Đăng nhập</a>
                     </div>
                 </div>
-                <div class="form-group mt-4">
-                    <div class="col-md-10">
-                        <input placeholder="@Html.DisplayNameFor(u => u.Email)" asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-md-10">
-                        <input placeholder="@Html.DisplayNameFor(u => u.Password)" asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-md-10">
-                        <input placeholder="@Html.DisplayNameFor(u => u.ConfirmPassword)" asp-for="ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-primary">Đăng ký</button>
-                    </div>
-                </div>
-            </form>
-        </section>
+            </div>
+        </div>
     </div>
-
-    @await Html.PartialAsync("_ExternalLoginPartial")
 </div>
-
 
 
 @section Scripts {

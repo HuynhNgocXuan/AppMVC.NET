@@ -72,7 +72,15 @@
                 <td>
 
                     <a class="btn btn-primary me-2" asp-action="Details" asp-route-id="@item.ProductID">Chi tiết</a>
-                    <a class="btn btn-danger me-2" asp-action="Delete" asp-route-id="@item.ProductID">Xóa</a>
+
+                    <form id="delete-form" method="post" style="display:none;" asp-controller="ProductManage"
+                        asp-action="Delete">
+                        <input type="hidden" name="id" value="" id="delete-id">
+                    </form>
+                    <a class="btn btn-danger me-2" href="javascript:void(0)" onclick="submitDeleteForm(@item.ProductID)">
+                        Xóa
+                    </a>
+
                 </td>
             </tr>
         }
@@ -80,3 +88,12 @@
 </table>
 
 <partial name="_PagingXTL" model="@ViewBag.pagingModel" />
+
+<script>
+    function submitDeleteForm(productId) {
+        if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+            $('#delete-id').val(productId); // Sử dụng .val() để gán giá trị
+            $('#delete-form').submit();    // Gửi form bằng jQuery
+        }
+    }
+</script>

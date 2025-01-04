@@ -13,8 +13,8 @@ using System.ComponentModel.DataAnnotations;
 namespace webMVC.Areas.Product.Controllers
 {
     [Area("Product")]
-    [Route("admin/product-manage/[action]/{id?}")]
     [Authorize(Roles = RoleName.Administrator + "," + RoleName.Editor)]
+    [Route("admin/product-manage/[action]/{id?}")]
     public class ProductManageController : Controller
     {
         private readonly AppDbContext _context;
@@ -25,7 +25,7 @@ namespace webMVC.Areas.Product.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        
         [TempData]
         public string? StatusMessage { get; set; }
 
@@ -319,7 +319,7 @@ namespace webMVC.Areas.Product.Controllers
             StatusMessage = "Bạn vừa xóa bài viết: " + post.Title;
 
             return RedirectToAction(nameof(Index));
-        }
+        } 
 
         private bool PostExists(int id)
         {

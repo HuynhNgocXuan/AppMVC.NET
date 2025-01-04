@@ -7,7 +7,7 @@
 
 <p>Nhập mã xác thực mà bạn nhận được qua phương thức đã chọn (ví dụ: SMS, email, ứng dụng xác thực).</p>
 
-<form asp-controller="Account" asp-action="VerifyCode" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post"
+<form asp-controller="Account" asp-action="VerifyCode" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post"
     class="form-horizontal" role="form">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input asp-for="Provider" type="hidden" />

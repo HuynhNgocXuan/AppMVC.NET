@@ -42,7 +42,7 @@
         $("#box-photo-upload .photo-detail span").click(function () {
             if (!confirm("Bạn có chắc chắn muốn xóa ảnh này?")) return;
 
-            var spanButton = $(this);
+            var spanButton = $(this); 
             var photoId = spanButton.data("id");
 
             var formData = new FormData();
