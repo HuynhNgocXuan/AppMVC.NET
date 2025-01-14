@@ -2,7 +2,9 @@
 @inject AppDbContext dbContext
 @using System.Data
 
+
 <partial name="_StatusMessage"></partial>
+
 @{
     ViewData["Title"] = "Cơ sở dữ liệu";
     var connect = dbContext.Database.GetDbConnection();
@@ -13,9 +15,9 @@
 
 
 <h2>Thông tin về cơ sở dữ liệu</h2>
-<p>- Database: @dbName</p>
-<p>- Source: @connect.DataSource</p>
-<p>- State: @connect.State</p>
+<p>Database: @dbName</p>
+<p>Source: @connect.DataSource</p>
+<p>State: @connect.State</p>
 <hr>
 <h2>Migrations</h2>
 @foreach (var migration in dbContext.Database.GetAppliedMigrations())
