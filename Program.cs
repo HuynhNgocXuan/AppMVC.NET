@@ -1,14 +1,13 @@
-using System.Net;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using System.Configuration;
 using webMVC.ExtendMethods;
 using webMVC.Data;
 using webMVC.Services;
 using webMVC.Models;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.FileProviders;
+using webMVC.Menu;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +40,9 @@ builder.Services.Configure<MailSettings>(mailSetting);
 builder.Services.AddSingleton<IEmailSender, SendMailService>();
 builder.Services.AddSingleton<ISmsSender, SendSmsService>();
 
+
+builder.Services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
+builder.Services.AddTransient<AdminSidebarService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -188,7 +190,7 @@ app.UseStaticFiles(new StaticFileOptions()
     (
         Path.Combine(Directory.GetCurrentDirectory(), "Uploads")
     ),
-    RequestPath = "/contents"
+    RequestPath = "/contents"   
 });
 
 app.UseRouting();
