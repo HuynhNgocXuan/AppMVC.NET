@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// builder.WebHost.UseUrls("http://0.0.0.0:8090");
 
 builder.Logging.ClearProviders();
 
@@ -138,7 +139,7 @@ builder.Services.AddAuthentication()
 //  .AddMicrosoftAccount()
 ;
 
-builder.Services.AddDistributedMemoryCache();      
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = "app-mvc";
@@ -190,7 +191,7 @@ app.UseStaticFiles(new StaticFileOptions()
     (
         Path.Combine(Directory.GetCurrentDirectory(), "Uploads")
     ),
-    RequestPath = "/contents"   
+    RequestPath = "/contents"
 });
 
 app.UseRouting();

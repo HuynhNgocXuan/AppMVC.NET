@@ -51,4 +51,9 @@
     <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.0" />
   </ItemGroup> 
 
+  <ItemGroup> 
+    <Content Include="Uploads\**"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content> 
+  </ItemGroup>
 </Project>
