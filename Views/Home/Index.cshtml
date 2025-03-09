@@ -1,7 +1,7 @@
-﻿@* @using webMVC.Models *@
-
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
+    var products = ViewBag.products as IQueryable<webMVC.Models.Product.ProductModel>;
+    var posts = ViewBag.posts as IQueryable<webMVC.Models.Blog.Post>;
 }
 
 <partial name="_StatusMessage" />
@@ -11,13 +11,92 @@
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
+
+
+
+<h2>Các sản phẩm</h2>
+<hr>
+
+<div class="d-flex flex-wrap justify-content-between">
+    @foreach (var product in products!)
+    {
+        var srcImg = "/contents/noPhoto.png";
+        if (product.Photos!.Any())
+        {
+            srcImg = $"/contents/Products/{product.Photos!.FirstOrDefault()!.FileName}";
+        }
+
+        <div class="product-card" style="width: 14%;">
+            <a asp-area="Product" asp-controller="ViewProduct" asp-action="Detail" asp-route-productSlug="@product.Slug">
+                <img src="@srcImg" class="card-img-top product-image" alt="...">
+                <div class="card-body pb-0">
+                    <h5 class="card-title product-title">@product.Title</h5>
+                    <text>Giá: <strong>@product.Price</strong></text>
+                </div>
+                <div class="card-body pt-0">
+                    <small>Vị trí đang bán ở đâu</small>
+                    <small>Đã bán: 5K</small>
+                    <small>5*</small>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
 <textarea name="" id="summerNoteHome"></textarea>
+
+<h2 class="mt-5">Tin tức</h2>
+<hr>
+
+@foreach (var post in posts!)
+{
+    <div class="media border-bottom mb-4 pb-3 post-item">
+        <img src="/contents/noPhoto.png" class="mr-3 img-thumbnail" alt="Thumbnail">
+        <div class="media-body ">
+            <h5 class="mt-0">
+                <a asp-area="Blog" asp-controller="ViewPost" asp-action="Detail" asp-route-postSlug="@post.Slug"
+                    class="text-dark post-title">
+                    @post.Title
+                </a>
+            </h5>
+
+            <p class="text-muted">@post.Description</p>
+
+            <div class="mt-3">
+                <i class="fas fa-tags text-primary"></i>
+                Chủ đề:
+                <strong class="text-danger">
+                    @(
+                                    post.PostCategories?.FirstOrDefault()?.Category?.Title ?? "Chưa có chủ đề"
+                                    )
+            </strong>
+        </div>
+
+            <div class="author-row mt-2">
+                <i class="fas fa-user text-success"></i>
+                Tác giả: <strong>@(post.Author?.UserName ?? "Ẩn danh")</strong> |
+                <i class="fas fa-calendar-alt text-info"></i>
+                Ngày cập nhật: <i>@post.DateUpdated.ToShortDateString()</i>
+            </div>
+
+            <div class="mt-3">
+                <a asp-area="Blog" asp-controller="ViewPost" asp-action="Detail" asp-route-postSlug="@post.Slug"
+                    class="btn btn-outline-primary btn-sm">
+                    Đọc thêm <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+}
+
+
 
 @{
     var summerNote = new SummerNote("#summerNoteHome")
-            {
-                Height = 200
-            };
+    {
+        Height = 200
+    };
 }
 
 @await Html.PartialAsync("_SummerNotePartial", summerNote)

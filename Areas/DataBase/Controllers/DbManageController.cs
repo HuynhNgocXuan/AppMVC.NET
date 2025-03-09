@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Bogus;
 using webMVC.Models.Blog;
 using webMVC.Models.Product;
+using Microsoft.AspNetCore.Authorization;
 
 namespace webMVC.Areas.DataBase.Controllers
 {
@@ -16,6 +17,7 @@ namespace webMVC.Areas.DataBase.Controllers
     {
         private readonly AppDbContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger _logger;
 
@@ -23,12 +25,13 @@ namespace webMVC.Areas.DataBase.Controllers
         public string? StatusMessage { get; set; }
 
 
-        public DbManageController(ILogger<DbManageController> logger, AppDbContext dbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        public DbManageController(ILogger<DbManageController> logger, AppDbContext dbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager)
         {
             _logger = logger;
             _dbContext = dbContext;
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         // GET: DbManage 
@@ -38,6 +41,7 @@ namespace webMVC.Areas.DataBase.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = RoleName.Administrator)]
         public IActionResult DeleteDb()
         {
             return View();
@@ -45,6 +49,7 @@ namespace webMVC.Areas.DataBase.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = RoleName.Administrator)]
         public async Task<IActionResult> DeleteDbAsync()
         {
             var success = await _dbContext.Database.EnsureDeletedAsync();
@@ -102,6 +107,8 @@ namespace webMVC.Areas.DataBase.Controllers
                 };
 
                 var createResult = await _userManager.CreateAsync(userAdmin, "123Wolf#");
+                await _signInManager.SignInAsync(userAdmin, false);
+
                 if (createResult.Succeeded)
                 {
                     var addToRoleResult = await _userManager.AddToRoleAsync(userAdmin, RoleName.Administrator);
@@ -123,8 +130,15 @@ namespace webMVC.Areas.DataBase.Controllers
             }
             else
             {
-                StatusMessage = "Seed Database đã có";
-                _logger.LogInformation(StatusMessage);
+                var user = await _userManager.GetUserAsync(this.User);
+                if (user == null) return this.Forbid();
+                var roles = await _userManager.GetRolesAsync(user);
+
+                if (!roles.Any(r => r == RoleName.Administrator))
+                {
+                    return this.Forbid();
+                }
+
             }
 
             SeedPostCategory();
@@ -167,7 +181,7 @@ namespace webMVC.Areas.DataBase.Controllers
 
 
 
-            
+
             var rCateIndex = new Random();
             int bv = 1;
 

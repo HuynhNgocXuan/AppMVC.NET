@@ -73,7 +73,7 @@
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-sb-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
                             <!-- Dropdown - Messages -->
@@ -97,7 +97,7 @@
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-sb-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 <span class="badge badge-danger badge-counter">3+</span>
@@ -148,7 +148,7 @@
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-sb-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
                                 <!-- Counter - Messages -->
                                 <span class="badge badge-danger badge-counter">7</span>
@@ -213,29 +213,15 @@
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-sb-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    <i class="far fa-user"></i>
-                                    @UserManager.GetUserName(User)!
-                                </span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" asp-controller="Manage" asp-action="Index" asp-area="Identity">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Hồ sơ
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <form asp-area="Identity" class="dropdown-item" asp-controller="Account"
-                                    asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-                                    <button title="Đăng xuất" type="submit" class="btn navbar-btn navbar-link">
-                                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                                    </button>
-                                </form>
-                            </div>
-                        </li>
+                        
+                        
+
+
+                        <partial class="" name="_LoginPartial" />
+
+
+                        
+
                     </ul>
                 </nav>
                 <div class="container-fluid">
