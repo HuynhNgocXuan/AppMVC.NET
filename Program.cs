@@ -8,6 +8,8 @@ using webMVC.Models;
 using Microsoft.Extensions.FileProviders;
 using webMVC.Menu;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -113,6 +115,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(300);
 });
 
+// JWT Configuration - Support Environment Variables for Production
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
+    ?? jwtSettings["Key"] 
+    ?? throw new InvalidOperationException("JWT Secret Key is not configured. Set JWT_SECRET_KEY environment variable or configure in appsettings.json");
+
+var key = Encoding.UTF8.GetBytes(jwtKey);
+
 builder.Services.AddAuthentication()
    .AddGoogle(options =>
    {
@@ -128,6 +138,20 @@ builder.Services.AddAuthentication()
        options.AppId = facebookConfig["AppId"] ?? throw new InvalidOperationException("Facebook configuration section is missing AppId.");
        options.AppSecret = facebookConfig["AppSecret"] ?? throw new InvalidOperationException("Facebook configuration section is missing AppSecret.");
        options.CallbackPath = "/dang-nhap-tu-facebook";
+   })
+   .AddJwtBearer(options =>
+   {
+       options.TokenValidationParameters = new TokenValidationParameters
+       {
+           ValidateIssuer = true,
+           ValidateAudience = true,
+           ValidateLifetime = true,
+           ValidateIssuerSigningKey = true,
+           ValidIssuer = jwtSettings["Issuer"],
+           ValidAudience = jwtSettings["Audience"],
+           IssuerSigningKey = new SymmetricSecurityKey(key),
+           ClockSkew = TimeSpan.Zero
+       };
    })
     .AddCookie(options =>
     {
@@ -166,6 +190,16 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.MinimumSameSitePolicy = SameSiteMode.Lax;
 });
 
+// Add CORS for API
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 
 
@@ -195,6 +229,8 @@ app.UseStaticFiles(new StaticFileOptions()
 });
 
 app.UseRouting();
+
+app.UseCors("AllowAll");
 
 app.UseSession();
 

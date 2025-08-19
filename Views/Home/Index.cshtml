@@ -6,13 +6,6 @@
 
 <partial name="_StatusMessage" />
 
-<div class="text-center">
-    <h2 class="display-4">Welcome</h2>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-
-
 
 <h2>Các sản phẩm</h2>
 <hr>
@@ -43,7 +36,6 @@
     }
 </div>
 
-<textarea name="" id="summerNoteHome"></textarea>
 
 <h2 class="mt-5">Tin tức</h2>
 <hr>
@@ -69,12 +61,12 @@
                     @(
                                     post.PostCategories?.FirstOrDefault()?.Category?.Title ?? "Chưa có chủ đề"
                                     )
-            </strong>
-        </div>
+                </strong>
+            </div>
 
             <div class="author-row mt-2">
                 <i class="fas fa-user text-success"></i>
-                Tác giả: <strong>@(post.Author?.UserName ?? "Ẩn danh")</strong> |
+                Tác giả: <strong>@("nhozxuan" ?? "Ẩn danh")</strong> |
                 <i class="fas fa-calendar-alt text-info"></i>
                 Ngày cập nhật: <i>@post.DateUpdated.ToShortDateString()</i>
             </div>

@@ -52,7 +52,7 @@
     </div>
     <div>
         <i>Cập nhật: @Model.DateUpdated</i> /
-        Tác giả: <strong>@Model.Author!.UserName</strong>
+        Tác giả: <strong>nhozxuan</strong>
     </div>
 
     <hr>
@@ -65,12 +65,11 @@
 
 
 @section Sidebar {
-    @* @await Component.InvokeAsync("webMVC.Components.CategoryProductSidebar",
+    @await Component.InvokeAsync("webMVC.Components.CategoryProductSidebar",
         new CategoryProductSidebar.CategorySidebarData()
     {
         Categories = categories,
         level = 0,
         categorySlug = category!.Slug
-    }) *@
-    <div>Video</div>
+    })
 }
