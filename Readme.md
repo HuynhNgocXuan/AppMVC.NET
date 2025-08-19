@@ -9,11 +9,12 @@
 Project bao gồm các tính năng cơ bản:
 
 * Trang chủ (Home)
-* Quản lý sản phẩm (Product)
+* Quản lý User (phân quyền, role, claim)
+* Quản lý sản phẩm (Thêm, sửa, xóa)
 * Quản lý bài viết (Blog)
 * Quản lý Database
 * Đăng nhập, đăng xuất (Identity)
-* Xác thực 2FA, phân quyền, phân trang 
+* Xác thực 2FA, phân trang 
 ## 🚀 Công nghệ sử dụng
 
 * **ASP.NET Core MVC**
@@ -53,6 +54,7 @@ Project bao gồm các tính năng cơ bản:
    * Trang chủ: `http://localhost:5274/`
    * Trang login: `http://localhost:5274/login`
    
+
 
 
 
