@@ -50,9 +50,10 @@ Project bao gồm các tính năng cơ bản:
    ```
 5. Truy cập trình duyệt:
 
-   * Trang chủ: `http://localhost:5000/`
-   * Trang login: `http://localhost:5000/login`
+   * Trang chủ: `http://localhost:5274/`
+   * Trang login: `http://localhost:5274/login`
    
+
 
 
 
